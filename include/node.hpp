@@ -1,9 +1,7 @@
 #pragma once
 #include <utils.hpp>
 #include <lexer.hpp>
-#include <command.hpp>
 #include <value_object.hpp>
-#include <command.hpp>
 #include <vector>
 #include <map>
 #include <queue>
@@ -11,7 +9,8 @@ using namespace std;
 
 namespace Effie {
   class Node {
-    PROPERTY(Type, Type, Type::NONE)
+  public:
+    
   };
 
   class StatementNode: public Node {
@@ -19,14 +18,30 @@ namespace Effie {
     virtual ~StatementNode() {}
   };
 
-  class AssignmentStatementNode: public StatementNode {
+  class ExpressionStatementNode: public StatementNode {
   public:
-    virtual ~AssignmentStatementNode() override {}
+    virtual ~ExpressionStatementNode() override;
   };
 
   class ExpressionNode: public Node {
   public:
     virtual ~ExpressionNode() {}
+  };
+
+  class BinaryExpressionNode: public ExpressionNode {
+  protected:
+    PROPERTY(ExpressionNode *, LExp, NULL)
+    PROPERTY(ExpressionNode *, RExp, NULL)
+  public:
+    BinaryExpressionNode(ExpressionNode *lexp, ExpressionNode *rexp) {
+      setLExp(lexp);
+      setRExp(rexp);
+    }
+
+    ~BinaryExpressionNode() override {
+      delete _LExp;
+      delete _RExp;
+    }
   };
 
   class RootNode: public Node {

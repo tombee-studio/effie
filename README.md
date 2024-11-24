@@ -1,2 +1,5 @@
 # Effie
-This is a Domain Specified Language.
+This is a **general purpose** Domain Specified Language(DSL).
+
+## Concept
+

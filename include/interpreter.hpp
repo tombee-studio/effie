@@ -1,25 +1,26 @@
 #pragma once
 #include <utils.hpp>
+#include <mnemonic_code.hpp>
+#include <vector>
 #include <stack>
 #include <queue>
-#include <command.hpp>
-#include <iinterpreter.hpp>
 using namespace std;
 
 namespace Effie {
   class Interpreter {
     PROPERTY(
-      stack<queue<ICommand *>>,
-      Commands,
-      stack<queue<ICommand *>>());
-    PROPERTY(IInterpreter *, Interface, NULL);
-  private:
-    Interpreter() {}
+      vector<MnemonicCode>,
+      Mnemonics,
+      vector<MnemonicCode>())
+    PROPERTY(
+      stack<ValueObject>,
+      Stack,
+      stack<ValueObject>()
+    )
   public:
-    static Interpreter *instance();
+    Interpreter() {}
 
     void run();
-  private:
-    void runCommand(ICommand *command);
+    void runMnemonic(MnemonicCode code);
   };
 }

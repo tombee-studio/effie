@@ -1,33 +1,23 @@
 #include <interpreter.hpp>
 using namespace Effie;
 
-Interpreter *
-Interpreter::instance() {
-  static Interpreter *instance = new Interpreter();
-  return instance;
-}
-
 void
 Interpreter::run() {
-  auto command = getCommands().top().front();
-  runCommand(command);
-  delete command;
-  getCommands().top().pop();
-  if(getCommands().top().size() == 0) {
-    getCommands().pop();
+  for(auto code: getMnemonics()) {
+    runMnemonic(code);
   }
 }
 
 void
-Interpreter::runCommand(ICommand *command) {
-  switch(command->getCommand()) {
-  case CommandType::CREATE:
-    getInterface()->create((Effie::CreateCommand *)command);
+Interpreter::runMnemonic(MnemonicCode code) {
+  switch(code.getOpCode()) {
+  case Mnemonic::PUSH:
+    getStack().push(code.getValue1());
     break;
-  case CommandType::REMOVE:
-    getInterface()->remove((Effie::RemoveCommand *)command);
+  case Mnemonic::POP:
+    getStack().pop();
     break;
   default:
-    throw runtime_error("undefined command: " + (int)command->getCommand());
+    break;
   }
 }

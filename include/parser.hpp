@@ -12,5 +12,6 @@ namespace Effie {
 
     static RootNode* parseRoot(vector<Token>&, int&);
     static StatementNode* parseStatement(vector<Token>&, int&);
+    static ExpressionStatementNode * parseExpressionStatement(vector<Token>&, int&);
   };
 }

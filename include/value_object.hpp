@@ -3,18 +3,22 @@
 #include <map>
 #include <value_type.hpp>
 #include <token.hpp>
+using namespace std;
 
 namespace Effie {
   class ValueObject {
-    PROPERTY(ValueType, Type, ValueType::NONE)
+    typedef map<string, ValueObject> Dictionary;
+
+    PROPERTY(ValueType, Type, ValueType::DICTIONARY)
     PROPERTY(int, IntValue, 0)
     PROPERTY(double, DoubleValue, 0.0)
     PROPERTY(string, Id, "")
+    PROPERTY(Dictionary, Dictionary, Dictionary())
 
   public:
     static ValueObject createNone() {
       ValueObject value;
-      value.setType(ValueType::NONE);
+      value.setType(ValueType::DICTIONARY);
       return value;
     }
 
@@ -34,12 +38,10 @@ namespace Effie {
         value.setId(token.getId());
         break;
       default:
-        value.setType(ValueType::NONE);
+        value.setType(ValueType::DICTIONARY);
         break;
       }
       return value;
     }
   };
-
-  typedef map<string, ValueObject> ComponentProperty;
 }
