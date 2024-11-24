@@ -3,10 +3,11 @@
 #include <map>
 #include <value_type.hpp>
 #include <token.hpp>
+#include <icalculatable.hpp>
 using namespace std;
 
 namespace Effie {
-  class ValueObject {
+  class ValueObject: public ICalculatable<ValueObject> {
     typedef map<string, ValueObject> Dictionary;
 
     PROPERTY(ValueType, Type, ValueType::DICTIONARY)
@@ -20,6 +21,13 @@ namespace Effie {
     static ValueObject createNone() {
       ValueObject value;
       value.setType(ValueType::DICTIONARY);
+      return value;
+    }
+
+    static ValueObject createIntValue(int ivalue) {
+      ValueObject value;
+      value.setIntValue(ivalue);
+      value.setType(ValueType::INT);
       return value;
     }
 
@@ -50,6 +58,155 @@ namespace Effie {
         break;
       }
       return value;
+    }
+    
+    virtual ValueObject add(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() + value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+
+    virtual ValueObject sub(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() - value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+
+    virtual ValueObject mul(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() * value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+
+    virtual ValueObject div(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() / value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+
+    virtual ValueObject mod(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() % value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+
+    virtual ValueObject eq(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() == value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+
+    virtual ValueObject ne(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() != value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+    virtual ValueObject ge(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() >= value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+    virtual ValueObject gt(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() > value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+
+    virtual ValueObject le(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() <= value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+
+    virtual ValueObject lt(ValueObject value) {
+      if(getType() != value.getType()) {
+        throw runtime_error("型の不一致");
+      }
+
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(getIntValue() < value.getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
+    }
+
+    virtual ValueObject nt() {
+      switch(getType()) {
+      case ValueType::INT:
+        return ValueObject::createIntValue(!getIntValue());
+      default:
+        throw runtime_error("Unsupported operation");
+      }
     }
   };
 }
