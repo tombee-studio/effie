@@ -3,3 +3,4 @@
 obj/
 lib/
 test.out.*
+.DS_Store
