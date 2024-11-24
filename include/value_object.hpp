@@ -14,11 +14,19 @@ namespace Effie {
     PROPERTY(double, DoubleValue, 0.0)
     PROPERTY(string, Id, "")
     PROPERTY(Dictionary, Dictionary, Dictionary())
+    PROPERTY(ValueObject *, Pointer, NULL);
 
   public:
     static ValueObject createNone() {
       ValueObject value;
       value.setType(ValueType::DICTIONARY);
+      return value;
+    }
+
+    static ValueObject createPointer(ValueObject *pointer) {
+      ValueObject value;
+      value.setPointer(pointer);
+      value.setType(ValueType::POINTER);
       return value;
     }
 
