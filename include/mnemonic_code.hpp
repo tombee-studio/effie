@@ -10,6 +10,10 @@ namespace Effie {
     PROPERTY(ValueObject, Value1, ValueObject::createNone())
     PROPERTY(ValueObject, Value2, ValueObject::createNone())
   public:
+    MnemonicCode() {
+
+    }
+  
     MnemonicCode(Mnemonic opCode) {
       setOpCode(opCode);
     }

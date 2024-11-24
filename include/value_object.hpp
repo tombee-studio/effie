@@ -71,6 +71,6 @@ namespace Effie {
     virtual ValueObject gt(ValueObject);
     virtual ValueObject le(ValueObject);
     virtual ValueObject lt(ValueObject);
-    virtual ValueObject nt();
+    // virtual ValueObject nt();
   };
 }

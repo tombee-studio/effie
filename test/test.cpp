@@ -1,10 +1,37 @@
 #include <lexer.hpp>
+#include <interpreter.hpp>
+#include <initializer_list>
 using namespace Effie;
+using namespace std;
 
 void
 testToken(string input, Type type) {
   auto tokens = Lexer::lex(input);
   assert(tokens[0].getType() == type);
+
+  cout << "OK!" << endl;
+}
+
+void
+testInterpreter(initializer_list<MnemonicCode> array, ValueObject target) {
+  vector<MnemonicCode> codes;
+  for(int i = 0; i < array.size(); i++) {
+    codes.push_back(*(array.begin() + i));
+  }
+  Interpreter interpreter;
+  interpreter.setMnemonics(codes);
+  interpreter.run();
+
+  auto value = interpreter.getStack().top();
+  assert(value.getType() == target.getType());
+  switch(value.getType()) {
+  case ValueType::INT:
+    assert(value.getIntValue() == target.getIntValue());
+    break;
+  default:
+    break;
+  }
+  cout << "OK!" << endl;
 }
 
 int
@@ -36,5 +63,12 @@ main() {
   testToken("1.01", Type::DOUBLE);
   testToken("123456789.0123456789", Type::DOUBLE);
   testToken("abc", Type::ID);
+
+  testInterpreter({
+    MnemonicCode(Mnemonic::POP),
+    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(1)),
+    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
+    MnemonicCode(Mnemonic::ADD)
+  }, ValueObject::createIntValue(3));
   return 0;
 }

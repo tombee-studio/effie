@@ -17,6 +17,11 @@ namespace Effie {
       Stack,
       stack<ValueObject>()
     )
+    PROPERTY(
+      ValueObject,
+      Global,
+      ValueObject::createNone()
+    )
   public:
     Interpreter() {}
 

@@ -154,12 +154,12 @@ ValueObject::lt(ValueObject value) {
   }
 }
 
-ValueObject
-ValueObject::nt() {
-  switch(getType()) {
-  case ValueType::INT:
-    return ValueObject::createIntValue(!getIntValue());
-  default:
-    throw runtime_error("Unsupported operation");
-  }
-}
+// ValueObject
+// ValueObject::nt() {
+//   switch(getType()) {
+//   case ValueType::INT:
+//     return ValueObject::createIntValue(!getIntValue());
+//   default:
+//     throw runtime_error("Unsupported operation");
+//   }
+// }
