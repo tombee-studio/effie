@@ -16,5 +16,8 @@ namespace Effie {
     static bool lexDouble(vector<Token>& tokens, const char *, int& start);
     static bool lexId(vector<Token>& tokens, const char *, int& start);
     static bool lexString(vector<Token>& tokens, const char *, int& start);
+
+    static bool isIdentifier(char);
+    static bool isNumber(char);
   };
 };

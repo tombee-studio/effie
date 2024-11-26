@@ -139,14 +139,13 @@ Lexer::lexDouble(vector<Token>& tokens, const char *text, int& index) {
 
 bool
 Lexer::lexId(vector<Token>& tokens, const char *text, int& index) {
-  if(text[index] < 'A' || 'z' < text[index]) {
+  if(!isIdentifier(text[index])) {
     return false;
   }
   
   int start = index;
   int size = 1;
-  while(('A' <= text[start + size] && text[start + size] <= 'z') ||
-    text[start + size] == '_') {
+  while(isIdentifier(text[start + size]) || isNumber(text[start + size])) {
     size++;
   }
 
@@ -156,4 +155,16 @@ Lexer::lexId(vector<Token>& tokens, const char *text, int& index) {
   tokens.push_back(Token::createIdToken(string(str)));
   index = start + size;
   return true;
+}
+
+bool
+Lexer::isIdentifier(char c) {
+  return ('A' <= c && c <= 'Z') 
+    || ('a' <= c && c <= 'z')
+    || c == '_';
+}
+
+bool
+Lexer::isNumber(char c) {
+  return '0' <= c && c <= '9';
 }
