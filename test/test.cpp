@@ -9,7 +9,18 @@ testToken(string input, Type type) {
   auto tokens = Lexer::lex(input);
   assert(tokens[0].getType() == type);
 
-  cout << "OK!" << endl;
+  cout << "OK! " << input << endl;
+}
+
+void
+testLex(string input, initializer_list<Type> tokenTypes) {
+  auto tokens = Lexer::lex(input);
+  assert(tokens.size() == tokenTypes.size());
+  for(int i = 0; i < tokenTypes.size(); i++) {
+    auto targetTokenType = *(tokenTypes.begin() + i);
+    assert(tokens[i].getType() == targetTokenType);
+  }
+  cout << "OK! " << input << endl;
 }
 
 void
@@ -63,6 +74,33 @@ main() {
   testToken("1.01", Type::DOUBLE);
   testToken("123456789.0123456789", Type::DOUBLE);
   testToken("abc", Type::ID);
+
+  testLex("abc abc abc", { Type::ID, Type::ID, Type::ID });
+  testLex("abc 1000 1234567890.0123456789", { Type::ID, Type::INT, Type::DOUBLE });
+  testLex(
+    "(1, 10.3, 1)", 
+    { Type::KW_LPAREN, Type::INT, Type::KW_COMMA, Type::DOUBLE, Type::KW_COMMA, Type::INT, Type::KW_RPAREN });
+  testLex(
+    ">=><=<!+-*/%!====", 
+    { Type::KW_GE, Type::KW_GT, Type::KW_LE, Type::KW_LT, Type::KW_NOT, Type::KW_ADD,
+      Type::KW_SUB, Type::KW_MUL, Type::KW_DIV, Type::KW_MOD, Type::KW_NE, Type::KW_EQ, Type::KW_EQUAL });
+  testLex(
+    "a = \"Hello, World!\";",
+    { Type::ID, Type::KW_EQUAL, Type::STRING, Type::KW_SEMICOLON }
+  );
+  testLex(
+    "obj[\"引数\"]",
+    { Type::ID, Type::KW_LBRACKET, Type::STRING, Type::KW_RBRACKET }
+  );
+  testLex(
+    "obj0123456789",
+    { Type::ID }
+  );
+  testLex(
+    "0123456789obj",
+    { Type::INT, Type::ID }
+  );
+  testLex("", {});
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
