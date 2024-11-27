@@ -6,9 +6,9 @@
 
 namespace Effie {
   class MnemonicCode {
-    PROPERTY(Mnemonic, OpCode, Mnemonic::NOP)
-    PROPERTY(ValueObject, Value1, ValueObject::createNone())
-    PROPERTY(ValueObject, Value2, ValueObject::createNone())
+    GETTER(Mnemonic, OpCode, Mnemonic::NOP)
+    GETTER(ValueObject, Value1, ValueObject::createNone())
+    GETTER(ValueObject, Value2, ValueObject::createNone())
   public:
     MnemonicCode() {
 

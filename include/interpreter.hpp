@@ -17,7 +17,7 @@ namespace Effie {
       Stack,
       stack<ValueObject>()
     )
-    PROPERTY(
+    PRIVATE_PROPERTY(
       ValueObject,
       Global,
       ValueObject::createNone()

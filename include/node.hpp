@@ -30,8 +30,8 @@ namespace Effie {
 
   class BinaryExpressionNode: public ExpressionNode {
   protected:
-    PROPERTY(ExpressionNode *, LExp, NULL)
-    PROPERTY(ExpressionNode *, RExp, NULL)
+    PRIVATE_PROPERTY(ExpressionNode *, LExp, NULL)
+    PRIVATE_PROPERTY(ExpressionNode *, RExp, NULL)
   public:
     BinaryExpressionNode(ExpressionNode *lexp, ExpressionNode *rexp) {
       setLExp(lexp);
@@ -45,7 +45,7 @@ namespace Effie {
   };
 
   class RootNode: public Node {
-    PROPERTY(vector<StatementNode *>,
+    GETTER(vector<StatementNode *>,
       Statemants,
       vector<StatementNode *>())
 

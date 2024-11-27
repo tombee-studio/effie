@@ -11,11 +11,11 @@ namespace Effie {
     typedef map<string, ValueObject> Dictionary;
 
     PROPERTY(ValueType, Type, ValueType::DICTIONARY)
-    PROPERTY(int, IntValue, 0)
-    PROPERTY(double, DoubleValue, 0.0)
-    PROPERTY(string, Id, "")
-    PROPERTY(Dictionary, Dictionary, Dictionary())
-    PROPERTY(ValueObject *, Pointer, NULL);
+    GETTER(int, IntValue, 0)
+    PRIVATE_PROPERTY(double, DoubleValue, 0.0)
+    PRIVATE_PROPERTY(string, Id, "")
+    PRIVATE_PROPERTY(Dictionary, Dictionary, Dictionary())
+    PRIVATE_PROPERTY(ValueObject *, Pointer, NULL);
 
   public:
     static ValueObject createNone() {

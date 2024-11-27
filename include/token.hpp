@@ -5,11 +5,11 @@
 
 namespace Effie {
   class Token {
-    PROPERTY(Type, Type, Type::NONE)
-    PROPERTY(string, Id, "")
-    PROPERTY(string, StringVal, "")
-    PROPERTY(int, IntVal, 0)
-    PROPERTY(double, DoubleVal, 0.0)
+    GETTER(Type, Type, Type::NONE)
+    GETTER(string, Id, "")
+    GETTER(string, StringVal, "")
+    GETTER(int, IntVal, 0)
+    GETTER(double, DoubleVal, 0.0)
     
     Token() {}
   public:

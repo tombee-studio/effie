@@ -24,7 +24,7 @@ using namespace std;
 
 #define GETTER(T, x, d) private:\
   T _##x = d;\
-  string propertyNameOf##x = #x;\
+  string _propertyNameOf##x = #x;\
   void set##x(T value) { _##x = value; }\
   public:\
   T& get##x() { return _##x; }\
@@ -36,7 +36,7 @@ using namespace std;
 
 #define PRIVATE_PROPERTY(T, x, d) private:\
   T _##x = d;\
-  string propertyNameOf##x = #x;\
+  string _propertyNameOf##x = #x;\
   void set##x(T value) { _##x = value; }\
   T& get##x() { return _##x; }\
   public:\
