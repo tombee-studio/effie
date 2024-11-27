@@ -74,6 +74,8 @@ main() {
   testToken("1.01", Type::DOUBLE);
   testToken("123456789.0123456789", Type::DOUBLE);
   testToken("abc", Type::ID);
+  testToken("true", Type::KW_TRUE);
+  testToken("false", Type::KW_FALSE);
 
   testLex("abc abc abc", { Type::ID, Type::ID, Type::ID });
   testLex("abc 1000 1234567890.0123456789", { Type::ID, Type::INT, Type::DOUBLE });
@@ -99,6 +101,10 @@ main() {
   testLex(
     "0123456789obj",
     { Type::INT, Type::ID }
+  );
+  testLex(
+    "true1",
+    { Type::KW_TRUE, Type::INT }
   );
   testLex("", {});
 

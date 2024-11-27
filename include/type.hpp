@@ -29,6 +29,8 @@ namespace Effie {
     KW_LT,
     KW_LE,
     KW_NOT,
+    KW_TRUE,
+    KW_FALSE,
     NONE
   };
 };

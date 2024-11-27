@@ -31,6 +31,13 @@ namespace Effie {
       return value;
     }
 
+    static ValueObject createBoolValue(bool boolValue) {
+      ValueObject value;
+      value.setIntValue(boolValue ? 1 : 0);
+      value.setType(ValueType::BOOL);
+      return value;
+    }
+
     static ValueObject createPointer(ValueObject *pointer) {
       ValueObject value;
       value.setPointer(pointer);
@@ -52,6 +59,14 @@ namespace Effie {
       case Type::ID:
         value.setType(ValueType::STRING);
         value.setId(token.getId());
+        break;
+      case Type::KW_TRUE:
+        value.setType(ValueType::BOOL);
+        value.setIntValue(1);
+        break;
+      case Type::KW_FALSE:
+        value.setType(ValueType::BOOL);
+        value.setIntValue(0);
         break;
       default:
         value.setType(ValueType::DICTIONARY);

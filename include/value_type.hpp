@@ -6,6 +6,7 @@ namespace Effie {
     INT,
     DOUBLE,
     STRING,
+    BOOL,
     DICTIONARY,
     POINTER
   };

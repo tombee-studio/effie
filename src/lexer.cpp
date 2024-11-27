@@ -13,6 +13,8 @@ Lexer::lex(string text) {
     }
     if(skipSpace(cText, index)) continue;
     if(lexKW(tokens, cText, index, "==", Type::KW_EQ)) continue;
+    if(lexKW(tokens, cText, index, "true", Type::KW_TRUE)) continue;
+    if(lexKW(tokens, cText, index, "false", Type::KW_FALSE)) continue;
     if(lexKW(tokens, cText, index, "!=", Type::KW_NE)) continue;
     if(lexKW(tokens, cText, index, ">=", Type::KW_GE)) continue;
     if(lexKW(tokens, cText, index, "<=", Type::KW_LE)) continue;
