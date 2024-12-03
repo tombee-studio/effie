@@ -14,6 +14,7 @@ namespace Effie {
     GETTER(int, IntValue, 0)
     PRIVATE_PROPERTY(double, DoubleValue, 0.0)
     PRIVATE_PROPERTY(string, Id, "")
+    PRIVATE_PROPERTY(string, StringValue, "")
     PRIVATE_PROPERTY(Dictionary, Dictionary, Dictionary())
     PRIVATE_PROPERTY(ValueObject *, Pointer, NULL);
 
@@ -57,8 +58,12 @@ namespace Effie {
         value.setDoubleValue(token.getDoubleVal());
         break;
       case Type::ID:
-        value.setType(ValueType::STRING);
+        value.setType(ValueType::ID);
         value.setId(token.getId());
+        break;
+      case Type::STRING:
+        value.setType(ValueType::STRING);
+        value.setStringValue(token.getStringVal());
         break;
       case Type::KW_TRUE:
         value.setType(ValueType::BOOL);

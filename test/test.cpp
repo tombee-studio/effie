@@ -1,4 +1,5 @@
 #include <lexer.hpp>
+#include <parser.hpp>
 #include <interpreter.hpp>
 #include <initializer_list>
 using namespace Effie;
@@ -43,6 +44,14 @@ testInterpreter(initializer_list<MnemonicCode> array, ValueObject target) {
     break;
   }
   cout << "OK!" << endl;
+}
+
+void
+testParser(string text) {
+  auto tokens = Lexer::lex(text);
+  Parser parser(tokens);
+  auto root = parser.parse();
+  cout << text << " OK!" << endl;
 }
 
 int
@@ -156,5 +165,11 @@ main() {
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
     MnemonicCode(Mnemonic::EQ)
   }, ValueObject::createIntValue(1));
+
+  testParser("3");
+  testParser("a");
+  testParser("\"Hello, World\"");
+  testParser("1.3");
+
   return 0;
 }

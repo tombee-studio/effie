@@ -1,15 +1,13 @@
 #include <parser.hpp>
 using namespace Effie;
 
-Token Parser::none = Token::createNone();
-
 RootNode* 
-Parser::parse(vector<Token>& tokens) {
+Parser::parse() {
   try {
     int index = 0;
     auto root = new RootNode();
     StatementNode *statement;
-    while((statement = parseStatement(tokens, index)) != NULL) {
+    while((statement = parseStatement()) != NULL) {
       root->getStatemants().push_back(statement);
     }
     return root;
@@ -20,31 +18,72 @@ Parser::parse(vector<Token>& tokens) {
 }
 
 StatementNode* 
-Parser::parseStatement(vector<Token>& tokens, int& index) {
-  Token token;
+Parser::parseStatement() {
+  StatementNode *statement = NULL;
+  if((statement = parseExpressionStatement()) != NULL) {
+    return statement;
+  }
+  return NULL;
+}
+
+ExpressionStatementNode* 
+Parser::parseExpressionStatement() {
+  ExpressionNode *node = NULL;
+  if((node = parseExpressionNode()) != NULL) {
+    return new ExpressionStatementNode(node);
+  }
+  return NULL;
+}
+
+ExpressionNode*
+Parser::parseExpressionNode() {
+  ExpressionNode *node = NULL;
+  if((node = parseTermNode()) != NULL) {
+    return node;
+  }
+}
+
+ExpressionNode *
+Parser::parseTermNode() {
+  if(isValidAt(getIndex(), Type::ID) || 
+    isValidAt(getIndex(), Type::INT) ||
+    isValidAt(getIndex(), Type::STRING) ||
+    isValidAt(getIndex(), Type::DOUBLE)) {
+      Token token = consumeValue();
+      return new TermNode(
+        ValueObject::createValueFrom(token));
+  }
   return NULL;
 }
 
 bool
-Parser::consume(Token& target, vector<Token>& tokens, int& index, Type type) {
-  if(tokens[index].getType() == type) {
-    target = tokens[index];
-    index++;
-    return true;
-  }
-  target = none;
-  return false;
+Parser::isValidAt(int index, Type type) {
+  return getTokens()[index].getType() == type;
 }
 
-bool
-Parser::consumeValue(Token& target, vector<Token>& tokens, int& index) {
+Token
+Parser::consume(Type type) {
+  auto tokens = getTokens();
+  auto index = getIndex();
+  if(tokens[index].getType() == type) {
+    Token token = tokens[index];
+    getIndex()++;
+    return token;
+  }
+  throw runtime_error("");
+}
+
+Token
+Parser::consumeValue() {
+  auto tokens = getTokens();
+  auto index = getIndex();
   if(tokens[index].getType() == Type::ID || 
     tokens[index].getType() == Type::INT ||
-    tokens[index].getType() == Type::DOUBLE) {
-    target = tokens[index];
-    index++;
-    return true;
+    tokens[index].getType() == Type::DOUBLE ||
+    tokens[index].getType() == Type::STRING) {
+    Token token = tokens[index];
+    getIndex()++;
+    return token;
   }
-  target = none;
-  return false;
+  throw runtime_error("");
 }

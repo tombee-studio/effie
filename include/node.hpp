@@ -13,17 +13,7 @@ namespace Effie {
     
   };
 
-  class StatementNode: public Node {
-  public:
-    virtual ~StatementNode() {}
-  };
-
-  class ExpressionStatementNode: public StatementNode {
-  public:
-    virtual ~ExpressionStatementNode() override;
-  };
-
-  class ExpressionNode: public Node {
+    class ExpressionNode: public Node {
   public:
     virtual ~ExpressionNode() {}
   };
@@ -41,6 +31,33 @@ namespace Effie {
     ~BinaryExpressionNode() override {
       delete _LExp;
       delete _RExp;
+    }
+  };
+
+  class TermNode: public ExpressionNode {
+    PRIVATE_PROPERTY(ValueObject, Value, ValueObject::createNone())
+  public:
+    TermNode(ValueObject value) {
+      setValue(value);
+    }
+
+    ~TermNode() override {
+
+    }
+  };
+
+  class StatementNode: public Node {
+  public:
+    virtual ~StatementNode() {}
+  };
+
+  class ExpressionStatementNode: public StatementNode {
+    PRIVATE_PROPERTY(ExpressionNode *, Expr, NULL);
+  public:
+    ExpressionStatementNode(ExpressionNode *node): _Expr(node) {}
+
+    virtual ~ExpressionStatementNode() override {
+      delete _Expr;
     }
   };
 

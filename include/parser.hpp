@@ -3,15 +3,27 @@
 
 namespace Effie {
   class Parser {
-    static Token none;
-  public:
-    static RootNode* parse(vector<Token>&);
-  private:
-    static bool consume(Token&, vector<Token>&, int&, Type);
-    static bool consumeValue(Token&, vector<Token>&, int&);
+    PRIVATE_PROPERTY(int, Index, 0);
+    PRIVATE_PROPERTY(vector<Token>, Tokens, vector<Token>())
 
-    static RootNode* parseRoot(vector<Token>&, int&);
-    static StatementNode* parseStatement(vector<Token>&, int&);
-    static ExpressionStatementNode * parseExpressionStatement(vector<Token>&, int&);
+    Token none;
+  public:
+    Parser(vector<Token> tokens) {
+      setTokens(tokens);
+    }
+
+    RootNode* parse();
+  private:
+    bool isValidAt(int, Type type);
+
+    Token consume(Type);
+    Token consumeValue();
+
+    RootNode* parseRoot();
+    StatementNode* parseStatement();
+    ExpressionStatementNode* parseExpressionStatement();
+
+    ExpressionNode* parseExpressionNode();
+    ExpressionNode* parseTermNode();
   };
 }
