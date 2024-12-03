@@ -51,7 +51,7 @@ testParser(string text) {
   auto tokens = Lexer::lex(text);
   Parser parser(tokens);
   auto root = parser.parse();
-  cout << text << " OK!" << endl;
+  cout << "OK! " << text << endl;
 }
 
 int
