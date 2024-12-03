@@ -54,6 +54,20 @@ testParser(string text) {
   cout << "OK! " << text << endl;
 }
 
+void
+testInterpreterRun(string source, ValueObject target) {
+  auto tokens = Lexer::lex(source);
+  Parser parser(tokens);
+  auto root = parser.parse();
+  vector<MnemonicCode> codes;
+  root->compile(codes);
+  Interpreter interpreter;
+  interpreter.setMnemonics(codes);
+  interpreter.run();
+  assert(interpreter.getReturnValue().eq(target).getIntValue() == 1);
+  cout << "OK! " << source << endl;
+}
+
 int
 main() {
   testToken("[", Type::KW_LBRACKET);
@@ -170,6 +184,8 @@ main() {
   testParser("a");
   testParser("\"Hello, World\"");
   testParser("1.3");
+
+  testInterpreterRun("3", ValueObject::createIntValue(3));
 
   return 0;
 }

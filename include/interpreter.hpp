@@ -27,5 +27,8 @@ namespace Effie {
 
     void run();
     void runMnemonic(MnemonicCode code);
+    ValueObject getReturnValue() {
+      return getStack().top();
+    }
   };
 }

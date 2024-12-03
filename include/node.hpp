@@ -2,6 +2,7 @@
 #include <utils.hpp>
 #include <lexer.hpp>
 #include <value_object.hpp>
+#include <mnemonic_code.hpp>
 #include <vector>
 #include <map>
 #include <queue>
@@ -10,12 +11,14 @@ using namespace std;
 namespace Effie {
   class Node {
   public:
-    
+    virtual void compile(vector<MnemonicCode>&) {}
   };
 
     class ExpressionNode: public Node {
   public:
     virtual ~ExpressionNode() {}
+
+    virtual void compile(vector<MnemonicCode>&) override {}
   };
 
   class BinaryExpressionNode: public ExpressionNode {
@@ -32,6 +35,8 @@ namespace Effie {
       delete _LExp;
       delete _RExp;
     }
+
+    void compile(vector<MnemonicCode>& codes) override;
   };
 
   class TermNode: public ExpressionNode {
@@ -44,11 +49,15 @@ namespace Effie {
     ~TermNode() override {
 
     }
+
+    void compile(vector<MnemonicCode>& codes) override;
   };
 
   class StatementNode: public Node {
   public:
     virtual ~StatementNode() {}
+
+    virtual void compile(vector<MnemonicCode>& codes) override {}
   };
 
   class ExpressionStatementNode: public StatementNode {
@@ -59,17 +68,21 @@ namespace Effie {
     virtual ~ExpressionStatementNode() override {
       delete _Expr;
     }
+
+    void compile(vector<MnemonicCode>& codes) override;
   };
 
   class RootNode: public Node {
     GETTER(vector<StatementNode *>,
       Statemants,
       vector<StatementNode *>())
-
+  public:
     ~RootNode() {
       for(auto node: _Statemants) {
         delete node;
       }
     }
+
+    void compile(vector<MnemonicCode>&) override;
   };
 }
