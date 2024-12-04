@@ -7,7 +7,7 @@ using namespace std;
 
 void
 testToken(string input, Type type) {
-  auto tokens = Lexer::lex(input);
+  auto tokens = Lexer(input).lex();
   assert(tokens[0].getType() == type);
 
   cout << "OK! " << input << endl;
@@ -15,7 +15,7 @@ testToken(string input, Type type) {
 
 void
 testLex(string input, initializer_list<Type> tokenTypes) {
-  auto tokens = Lexer::lex(input);
+  auto tokens = Lexer(input).lex();
   assert(tokens.size() == tokenTypes.size());
   for(int i = 0; i < tokenTypes.size(); i++) {
     auto targetTokenType = *(tokenTypes.begin() + i);
@@ -48,7 +48,7 @@ testInterpreter(initializer_list<MnemonicCode> array, ValueObject target) {
 
 void
 testParser(string text) {
-  auto tokens = Lexer::lex(text);
+  auto tokens = Lexer(text).lex();
   Parser parser(tokens);
   auto root = parser.parse();
   cout << "OK! " << text << endl;
@@ -56,7 +56,7 @@ testParser(string text) {
 
 void
 testInterpreterRun(string source, ValueObject target) {
-  auto tokens = Lexer::lex(source);
+  auto tokens = Lexer(source).lex();
   Parser parser(tokens);
   auto root = parser.parse();
   vector<MnemonicCode> codes;
