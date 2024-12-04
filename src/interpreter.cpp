@@ -10,99 +10,219 @@ Interpreter::run() {
 }
 
 void
-Interpreter::runMnemonic(MnemonicCode code) {
+Interpreter::push(MnemonicCode code) {
+  getStack().push(code.getValue1());
+}
+
+void
+Interpreter::pop(MnemonicCode code) {
+  getStack().pop();
+}
+
+void
+Interpreter::add(MnemonicCode code) {
   ValueObject value1;
   ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.add(value2));
+}
+
+void
+Interpreter::sub(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.sub(value2));
+}
+
+void
+Interpreter::mul(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.mul(value2));
+}
+
+void
+Interpreter::div(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.div(value2));
+}
+
+void
+Interpreter::mod(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.mod(value2));
+}
+
+void
+Interpreter::ge(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.ge(value2));
+}
+
+void
+Interpreter::gt(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.gt(value2));
+}
+
+void
+Interpreter::le(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.le(value2));
+}
+
+void
+Interpreter::lt(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.lt(value2));
+}
+
+void
+Interpreter::eq(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.eq(value2));
+}
+
+void
+Interpreter::ne(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  getStack().push(value1.ne(value2));
+}
+
+void
+Interpreter::mov(MnemonicCode code) {
+}
+
+void
+Interpreter::nt(MnemonicCode code) {
+}
+
+void
+Interpreter::get(MnemonicCode code) {
+}
+
+void
+Interpreter::ref(MnemonicCode code) {
+}
+
+void
+Interpreter::jmp(MnemonicCode code) {
+}
+
+void
+Interpreter::nop(MnemonicCode code) {
+}
+
+void
+Interpreter::runMnemonic(MnemonicCode code) {
   switch(code.getOpCode()) {
   case Mnemonic::PUSH:
-    getStack().push(code.getValue1());
+    push(code);
     break;
   case Mnemonic::POP:
-    getStack().pop();
+    pop(code);
     break;
   case Mnemonic::ADD:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.add(value2));
+    add(code);
     break;
   case Mnemonic::SUB:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.sub(value2));
+    sub(code);
     break;
   case Mnemonic::MUL:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.mul(value2));
+    mul(code);
     break;
   case Mnemonic::DIV:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.div(value2));
+    div(code);
     break;
   case Mnemonic::MOD:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.mod(value2));
+    mod(code);
     break;
   case Mnemonic::GE:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.ge(value2));
+    ge(code);
     break;
   case Mnemonic::GT:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.gt(value2));
+    gt(code);
     break;
   case Mnemonic::LE:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.le(value2));
+    le(code);
     break;
   case Mnemonic::LT:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.lt(value2));
+    lt(code);
     break;
   case Mnemonic::EQ:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.eq(value2));
+    eq(code);
     break;
   case Mnemonic::NE:
-    value2 = getStack().top();
-    getStack().pop();
-    value1 = getStack().top();
-    getStack().pop();
-    getStack().push(value1.ne(value2));
+    ne(code);
     break;
-  // case Mnemonic::NT:
-  //   value1 = getStack().top();
-  //   getStack().pop();
-  //   getStack().push(value1.nt());
-  //   break;
+  case Mnemonic::MOV:
+    mov(code);
+    break;
+  case Mnemonic::NT:
+    nt(code);
+    break;
+  case Mnemonic::GET:
+    get(code);
+    break;
+  case Mnemonic::REF:
+    ref(code);
+    break;
+  case Mnemonic::JMP:
+    jmp(code);
+    break;
   default:
+    nop(code);
     break;
   }
 }
