@@ -106,3 +106,8 @@ Interpreter::runMnemonic(MnemonicCode code) {
     break;
   }
 }
+
+ValueObject
+Interpreter::getReturnValue() {
+  return getStack().top();
+}
