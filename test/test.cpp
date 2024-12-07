@@ -180,6 +180,15 @@ main() {
     MnemonicCode(Mnemonic::EQ)
   }, ValueObject::createIntValue(1));
 
+  ValueObject targetValue1;
+  testInterpreter({
+    MnemonicCode(Mnemonic::POP),
+    MnemonicCode(Mnemonic::PUSH, ValueObject::createPointer(&targetValue1)),
+    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
+    MnemonicCode(Mnemonic::MOV)
+  }, ValueObject::createIntValue(3));
+  assert(targetValue1.getIntValue() == 3);
+
   testParser("3");
   testParser("a");
   testParser("\"Hello, World\"");

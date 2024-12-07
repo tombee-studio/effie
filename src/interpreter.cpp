@@ -142,6 +142,18 @@ Interpreter::ne(MnemonicCode code) {
 
 void
 Interpreter::mov(MnemonicCode code) {
+  ValueObject value1;
+  ValueObject value2;
+
+  value2 = getStack().top();
+  getStack().pop();
+  value1 = getStack().top();
+  getStack().pop();
+  if(value1.getType() != ValueType::POINTER) {
+    throw runtime_error("need POINTER");
+  }
+  *(value1.getPointer()) = value2;
+  getStack().push(value2);
 }
 
 void

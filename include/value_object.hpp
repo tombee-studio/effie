@@ -12,11 +12,11 @@ namespace Effie {
 
     PROPERTY(ValueType, Type, ValueType::DICTIONARY)
     GETTER(int, IntValue, 0)
-    PRIVATE_PROPERTY(double, DoubleValue, 0.0)
-    PRIVATE_PROPERTY(string, Id, "")
-    PRIVATE_PROPERTY(string, StringValue, "")
-    PRIVATE_PROPERTY(Dictionary, Dictionary, Dictionary())
-    PRIVATE_PROPERTY(ValueObject *, Pointer, NULL);
+    GETTER(double, DoubleValue, 0.0)
+    GETTER(string, Id, "")
+    GETTER(string, StringValue, "")
+    GETTER(Dictionary, Dictionary, Dictionary())
+    GETTER(ValueObject *, Pointer, NULL);
 
   public:
     static ValueObject createNone() {
