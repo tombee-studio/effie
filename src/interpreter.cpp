@@ -166,6 +166,13 @@ Interpreter::get(MnemonicCode code) {
 
 void
 Interpreter::ref(MnemonicCode code) {
+  ValueObject value = getStack().top();
+  getStack().pop();
+}
+
+void
+Interpreter::var(MnemonicCode code) {
+  getStack().push(ValueObject::createPointer(&getGlobal()));
 }
 
 void
@@ -229,6 +236,9 @@ Interpreter::runMnemonic(MnemonicCode code) {
     break;
   case Mnemonic::REF:
     ref(code);
+    break;
+  case Mnemonic::VAR:
+    var(code);
     break;
   case Mnemonic::JMP:
     jmp(code);
