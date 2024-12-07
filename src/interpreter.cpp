@@ -162,12 +162,26 @@ Interpreter::nt(MnemonicCode code) {
 
 void
 Interpreter::get(MnemonicCode code) {
+  ValueObject value = getStack().top();
+  getStack().pop();
+  if(value.getType() != ValueType::POINTER) {
+    throw runtime_error("need POINTER");
+  }
+  getStack().push(*value.getPointer());
 }
 
 void
 Interpreter::ref(MnemonicCode code) {
+  string name = code.getValue1().getStringValue();
   ValueObject value = getStack().top();
   getStack().pop();
+
+  auto& dict = value.getPointer()->getDictionary();
+  if(dict.find(name) == dict.end()) {
+    dict.insert({ name, ValueObject::createNone() });
+  }
+  getStack().push(
+    ValueObject::createPointer(&dict[name]));
 }
 
 void
