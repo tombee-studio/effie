@@ -45,39 +45,27 @@ Parser::parseExpressionNode() {
 
 ExpressionNode *
 Parser::parseAddNode() {
-  auto node1 = parseMulNode();
-  if(node1 == NULL) {
-    return NULL;
+  auto left = parseMulNode();
+  while(isValidAt(getIndex(), Type::KW_ADD) ||
+    isValidAt(getIndex(), Type::KW_SUB)) {
+    Token token = consumeNext();
+    auto right = parseMulNode();
+    left = new AddExpressionNode(left, right, token.getType());
   }
-  if(!(isValidAt(getIndex(), Type::KW_ADD) ||
-    isValidAt(getIndex(), Type::KW_SUB) ||
-    isValidAt(getIndex(), Type::KW_MOD))) {
-    return node1;
-  }
-  Token token = consumeNext();
-  auto node2 = parseAddNode();
-  if(node2 == NULL) {
-    throw runtime_error("Unsupported grammar: needs Add node");
-  }
-  return new AddExpressionNode(node1, node2, token.getType());
+  return left;
 }
 
 ExpressionNode *
 Parser::parseMulNode() {
-  auto node1 = parseTermNode();
-  if(node1 == NULL) {
-    return NULL;
+  auto left = parseTermNode();
+  while(isValidAt(getIndex(), Type::KW_MUL) ||
+    isValidAt(getIndex(), Type::KW_DIV) ||
+    isValidAt(getIndex(), Type::KW_MOD)) {
+    Token token = consumeNext();
+    auto right = parseTermNode();
+    left = new MulExpressionNode(left, right, token.getType());
   }
-  if(!(isValidAt(getIndex(), Type::KW_MUL) ||
-    isValidAt(getIndex(), Type::KW_DIV))) {
-    return node1;
-  }
-  Token token = consumeNext();
-  auto node2 = parseMulNode();
-  if(node2 == NULL) {
-    throw runtime_error("Unsupported grammar: needs Mul node");
-  }
-  return new MulExpressionNode(node1, node2, token.getType());
+  return left;
 }
 
 ExpressionNode *

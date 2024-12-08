@@ -12,9 +12,6 @@ AddExpressionNode::compile(vector<MnemonicCode>& codes) {
   case Type::KW_SUB:
     codes.push_back(MnemonicCode(Mnemonic::SUB));
     return;
-  case Type::KW_MOD:
-    codes.push_back(MnemonicCode(Mnemonic::MOD));
-    return;
   default:
     throw runtime_error("unsupported operator");
   }
@@ -35,6 +32,9 @@ MulExpressionNode::compile(vector<MnemonicCode>& codes) {
     return;
   case Type::KW_DIV:
     codes.push_back(MnemonicCode(Mnemonic::DIV));
+    return;
+  case Type::KW_MOD:
+    codes.push_back(MnemonicCode(Mnemonic::MOD));
     return;
   default:
     throw runtime_error("unsupported operator");
