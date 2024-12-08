@@ -45,13 +45,17 @@ Parser::parseExpressionNode() {
 
 ExpressionNode *
 Parser::parseTermNode() {
-  if(isValidAt(getIndex(), Type::ID) || 
-    isValidAt(getIndex(), Type::INT) ||
+  if(isValidAt(getIndex(), Type::INT) ||
     isValidAt(getIndex(), Type::STRING) ||
     isValidAt(getIndex(), Type::DOUBLE)) {
       Token token = consumeValue();
       return new TermNode(
         ValueObject::createValueFrom(token));
+  }
+
+  if(isValidAt(getIndex(), Type::ID)) {
+    Token token = consumeValue();
+    return new VariableNode(ValueObject::createValueFrom(token));
   }
 
   if(isValidAt(getIndex(), Type::KW_LPAREN)) {

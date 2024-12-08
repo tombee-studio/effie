@@ -46,6 +46,13 @@ namespace Effie {
       return value;
     }
 
+    static ValueObject createIdValue(string idValue) {
+      ValueObject value;
+      value.setId(idValue);
+      value.setType(ValueType::ID);
+      return value;
+    }
+
     static ValueObject createPointer(ValueObject *pointer) {
       ValueObject value;
       value.setPointer(pointer);

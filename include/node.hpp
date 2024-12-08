@@ -14,7 +14,7 @@ namespace Effie {
     virtual void compile(vector<MnemonicCode>&) {}
   };
 
-    class ExpressionNode: public Node {
+  class ExpressionNode: public Node {
   public:
     virtual ~ExpressionNode() {}
 
@@ -39,18 +39,6 @@ namespace Effie {
     void compile(vector<MnemonicCode>& codes) override;
   };
 
-  class MulExpressionNode: public BinaryExpressionNode {
-  public:
-    MulExpressionNode(ExpressionNode *lexp, ExpressionNode *rexp): 
-      BinaryExpressionNode(lexp, rexp) {}
-
-    ~MulExpressionNode() override {
-      BinaryExpressionNode::~BinaryExpressionNode();
-    }
-
-    void compile(vector<MnemonicCode>& codes) override;
-  };
-
   class TermNode: public ExpressionNode {
     PRIVATE_PROPERTY(ValueObject, Value, ValueObject::createNone())
   public:
@@ -61,6 +49,18 @@ namespace Effie {
     ~TermNode() override {
 
     }
+
+    void compile(vector<MnemonicCode>& codes) override;
+  };
+
+  class VariableNode: public ExpressionNode {
+    PRIVATE_PROPERTY(ValueObject, Name, ValueObject::createNone())
+  public:
+    VariableNode(ValueObject name) {
+      setName(name);
+    }
+
+    ~VariableNode() override {}
 
     void compile(vector<MnemonicCode>& codes) override;
   };

@@ -2,13 +2,15 @@
 using namespace Effie;
 
 void
-BinaryExpressionNode::compile(vector<MnemonicCode>& codes) {
-
+TermNode::compile(vector<MnemonicCode>& codes) {
+  codes.push_back(MnemonicCode(Mnemonic::PUSH, getValue()));
 }
 
 void
-TermNode::compile(vector<MnemonicCode>& codes) {
-  codes.push_back(MnemonicCode(Mnemonic::PUSH, getValue()));
+VariableNode::compile(vector<MnemonicCode>& codes) {
+  codes.push_back(MnemonicCode(Mnemonic::VAR, getName()));
+  codes.push_back(MnemonicCode(Mnemonic::REF));
+  codes.push_back(MnemonicCode(Mnemonic::GET));
 }
 
 void

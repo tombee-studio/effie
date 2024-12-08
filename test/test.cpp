@@ -197,12 +197,12 @@ main() {
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::VAR),
-    MnemonicCode(Mnemonic::REF, ValueObject::createStringValue("test")),
+    MnemonicCode(Mnemonic::REF, ValueObject::createIdValue("test")),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
     MnemonicCode(Mnemonic::MOV),
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::VAR),
-    MnemonicCode(Mnemonic::REF, ValueObject::createStringValue("test")),
+    MnemonicCode(Mnemonic::REF, ValueObject::createIdValue("test")),
     MnemonicCode(Mnemonic::GET),
   }, ValueObject::createIntValue(3));
   assert(targetValue1.getIntValue() == 3);
@@ -212,9 +212,10 @@ main() {
   testParser("\"Hello, World\"");
   testParser("1.3");
   testParser("(3)");
+  testParser("a");
 
   testInterpreterRun("3", ValueObject::createIntValue(3));
-  testInterpreterRun("(3)", ValueObject::createIntValue(3));
+  testInterpreterRun("(1)", ValueObject::createIntValue(1));
 
   return 0;
 }

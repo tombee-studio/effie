@@ -172,7 +172,7 @@ Interpreter::get(MnemonicCode code) {
 
 void
 Interpreter::ref(MnemonicCode code) {
-  string name = code.getValue1().getStringValue();
+  string name = code.getValue1().getId();
   ValueObject value = getStack().top();
   getStack().pop();
 
