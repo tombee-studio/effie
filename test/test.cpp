@@ -140,49 +140,56 @@ main() {
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(1)),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
-    MnemonicCode(Mnemonic::ADD)
+    MnemonicCode(Mnemonic::ADD),
+    MnemonicCode(Mnemonic::EXIT)
   }, ValueObject::createIntValue(3));
   
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(1)),
-    MnemonicCode(Mnemonic::SUB)
+    MnemonicCode(Mnemonic::SUB),
+    MnemonicCode(Mnemonic::EXIT)
   }, ValueObject::createIntValue(1));
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(1)),
-    MnemonicCode(Mnemonic::MUL)
+    MnemonicCode(Mnemonic::MUL),
+    MnemonicCode(Mnemonic::EXIT)
   }, ValueObject::createIntValue(2));
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(4)),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
-    MnemonicCode(Mnemonic::DIV)
+    MnemonicCode(Mnemonic::DIV),
+    MnemonicCode(Mnemonic::EXIT)
   }, ValueObject::createIntValue(2));
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
-    MnemonicCode(Mnemonic::MOD)
+    MnemonicCode(Mnemonic::MOD),
+    MnemonicCode(Mnemonic::EXIT)
   }, ValueObject::createIntValue(1));
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
-    MnemonicCode(Mnemonic::EQ)
+    MnemonicCode(Mnemonic::EQ),
+    MnemonicCode(Mnemonic::EXIT)
   }, ValueObject::createIntValue(0));
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
-    MnemonicCode(Mnemonic::EQ)
+    MnemonicCode(Mnemonic::EQ),
+    MnemonicCode(Mnemonic::EXIT)
   }, ValueObject::createIntValue(1));
 
   ValueObject targetValue1;
@@ -190,7 +197,8 @@ main() {
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createPointer(&targetValue1)),
     MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
-    MnemonicCode(Mnemonic::MOV)
+    MnemonicCode(Mnemonic::MOV),
+    MnemonicCode(Mnemonic::EXIT)
   }, ValueObject::createIntValue(3));
   assert(targetValue1.getIntValue() == 3);
 
@@ -204,6 +212,7 @@ main() {
     MnemonicCode(Mnemonic::VAR),
     MnemonicCode(Mnemonic::REF, ValueObject::createIdValue("test")),
     MnemonicCode(Mnemonic::GET),
+    MnemonicCode(Mnemonic::EXIT)
   }, ValueObject::createIntValue(3));
   assert(targetValue1.getIntValue() == 3);
 

@@ -22,6 +22,16 @@ namespace Effie {
       Global,
       ValueObject::createNone()
     )
+    PRIVATE_PROPERTY(
+      bool,
+      IsRunning,
+      true
+    )
+    PRIVATE_PROPERTY(
+      int,
+      ProgramCount,
+      0
+    )
   public:
     Interpreter() {}
 
@@ -50,6 +60,7 @@ namespace Effie {
     virtual void ref(MnemonicCode code);
     virtual void var(MnemonicCode code);
     virtual void jmp(MnemonicCode code);
+    virtual void exit(MnemonicCode code);
     virtual void nop(MnemonicCode code);
   };
 }

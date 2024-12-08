@@ -4,8 +4,9 @@ using namespace Effie;
 void
 Interpreter::run() {
   getStack().push(ValueObject::createNone());
-  for(auto code: getMnemonics()) {
-    runMnemonic(code);
+  while(getIsRunning()) {
+    runMnemonic(getMnemonics()[getProgramCount()]);
+    getProgramCount()++;
   }
 }
 
@@ -194,6 +195,11 @@ Interpreter::jmp(MnemonicCode code) {
 }
 
 void
+Interpreter::exit(MnemonicCode code) {
+  getIsRunning() = false;
+}
+
+void
 Interpreter::nop(MnemonicCode code) {
 }
 
@@ -256,6 +262,9 @@ Interpreter::runMnemonic(MnemonicCode code) {
     break;
   case Mnemonic::JMP:
     jmp(code);
+    break;
+  case Mnemonic::EXIT:
+    exit(code);
     break;
   default:
     nop(code);

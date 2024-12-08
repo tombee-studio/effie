@@ -126,4 +126,5 @@ RootNode::compile(vector<MnemonicCode>& codes) {
   for(auto statement: getStatemants()) {
     statement->compile(codes);
   }
+  codes.push_back(MnemonicCode(Mnemonic::EXIT, ValueObject::createNone()));
 }
