@@ -38,9 +38,25 @@ Parser::parseExpressionStatement() {
 ExpressionNode*
 Parser::parseExpressionNode() {
   ExpressionNode *node = NULL;
-  if((node = parseAddNode()) != NULL) {
+  if((node = parseComparisonNode()) != NULL) {
     return node;
   }
+}
+
+ExpressionNode *
+Parser::parseComparisonNode() {
+  auto left = parseAddNode();
+  while(isValidAt(getIndex(), Type::KW_EQ) ||
+    isValidAt(getIndex(), Type::KW_NE) ||
+    isValidAt(getIndex(), Type::KW_GE) ||
+    isValidAt(getIndex(), Type::KW_GT) ||
+    isValidAt(getIndex(), Type::KW_LE) ||
+    isValidAt(getIndex(), Type::KW_LT)) {
+    Token token = consumeNext();
+    auto right = parseAddNode();
+    left = new ComparisonExpressionNode(left, right, token.getType());
+  }
+  return left;
 }
 
 ExpressionNode *

@@ -2,6 +2,39 @@
 using namespace Effie;
 
 void
+ComparisonExpressionNode::compile(vector<MnemonicCode>& codes) {
+  getLExp()->compile(codes);
+  getRExp()->compile(codes);
+  switch(getType()) {
+  case Type::KW_EQ:
+    codes.push_back(MnemonicCode(Mnemonic::EQ));
+    return;
+  case Type::KW_NE:
+    codes.push_back(MnemonicCode(Mnemonic::NE));
+    return;
+  case Type::KW_GE:
+    codes.push_back(MnemonicCode(Mnemonic::GE));
+    return;
+  case Type::KW_GT:
+    codes.push_back(MnemonicCode(Mnemonic::GT));
+    return;
+  case Type::KW_LE:
+    codes.push_back(MnemonicCode(Mnemonic::LE));
+    return;
+  case Type::KW_LT:
+    codes.push_back(MnemonicCode(Mnemonic::LT));
+    return;
+  default:
+    throw runtime_error("unsupported operator");
+  }
+}
+
+void
+ComparisonExpressionNode::lcompile(vector<MnemonicCode>& codes) {
+  compile(codes);
+}
+
+void
 AddExpressionNode::compile(vector<MnemonicCode>& codes) {
   getLExp()->compile(codes);
   getRExp()->compile(codes);

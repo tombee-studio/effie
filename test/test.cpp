@@ -219,6 +219,7 @@ main() {
   testParser("3 * 2");
   testParser("3 * 2 / 5 % 2");
   testParser("3 * 2 / 5 % 2 + 1 - 2");
+  testParser("3 * 2 == 36 / 6");
 
   testInterpreterRun("3", ValueObject::createIntValue(3));
   testInterpreterRun("(1)", ValueObject::createIntValue(1));
@@ -227,6 +228,7 @@ main() {
   testInterpreterRun("15 / 5 + 3", ValueObject::createIntValue(6));
   testInterpreterRun("3 % 2", ValueObject::createIntValue(1));
   testInterpreterRun("3 % 2 + 1", ValueObject::createIntValue(2));
+  testInterpreterRun("3 * 2 == 36 / 6", ValueObject::createIntValue(1));
 
   return 0;
 }
