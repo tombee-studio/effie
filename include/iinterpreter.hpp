@@ -22,7 +22,7 @@ namespace Effie {
     virtual void get(MnemonicCode code) = 0;
     virtual void ref(MnemonicCode code) = 0;
     virtual void var(MnemonicCode code) = 0;
-    virtual void jmp(MnemonicCode code) = 0;
+    virtual void je(MnemonicCode code) = 0;
     virtual void exit(MnemonicCode code) = 0;
     virtual void nop(MnemonicCode code) = 0;
   };

@@ -191,7 +191,7 @@ Interpreter::var(MnemonicCode code) {
 }
 
 void
-Interpreter::jmp(MnemonicCode code) {
+Interpreter::je(MnemonicCode code) {
 }
 
 void
@@ -260,8 +260,8 @@ Interpreter::runMnemonic(MnemonicCode code) {
   case Mnemonic::VAR:
     var(code);
     break;
-  case Mnemonic::JMP:
-    jmp(code);
+  case Mnemonic::JE:
+    je(code);
     break;
   case Mnemonic::EXIT:
     exit(code);
