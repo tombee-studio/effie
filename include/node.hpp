@@ -38,6 +38,22 @@ namespace Effie {
     }
   };
 
+  class MulExpressionNode: public BinaryExpressionNode {
+    PRIVATE_PROPERTY(Type, Type, Type::NONE)
+  public:
+    MulExpressionNode(ExpressionNode *lexp, ExpressionNode *rexp, Type type): 
+    BinaryExpressionNode(lexp, rexp){
+      setType(type);
+    }
+
+    ~MulExpressionNode() override {
+      BinaryExpressionNode::~BinaryExpressionNode();
+    }
+
+    virtual void compile(vector<MnemonicCode>& codes) override;
+    virtual void lcompile(vector<MnemonicCode>& codes) override;
+  };
+
   class TermNode: public ExpressionNode {
     PRIVATE_PROPERTY(ValueObject, Value, ValueObject::createNone())
   public:

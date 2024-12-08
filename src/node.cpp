@@ -2,6 +2,27 @@
 using namespace Effie;
 
 void
+MulExpressionNode::compile(vector<MnemonicCode>& codes) {
+  getLExp()->compile(codes);
+  getRExp()->compile(codes);
+  switch(getType()) {
+  case Type::KW_MUL:
+    codes.push_back(MnemonicCode(Mnemonic::MUL));
+    return;
+  case Type::KW_DIV:
+    codes.push_back(MnemonicCode(Mnemonic::DIV));
+    return;
+  default:
+    throw runtime_error("unsupported operator");
+  }
+}
+
+void
+MulExpressionNode::lcompile(vector<MnemonicCode>& codes) {
+  compile(codes);
+}
+
+void
 TermNode::compile(vector<MnemonicCode>& codes) {
   codes.push_back(MnemonicCode(Mnemonic::PUSH, getValue()));
 }

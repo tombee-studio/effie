@@ -17,6 +17,7 @@ namespace Effie {
     bool isValidAt(int, Type type);
 
     Token consume(Type);
+    Token consumeNext();
     Token consumeValue();
 
     RootNode* parseRoot();
@@ -24,6 +25,7 @@ namespace Effie {
     ExpressionStatementNode* parseExpressionStatement();
 
     ExpressionNode* parseExpressionNode();
+    ExpressionNode* parseMulNode();
     ExpressionNode* parseTermNode();
   };
 }

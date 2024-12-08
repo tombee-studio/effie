@@ -38,9 +38,27 @@ Parser::parseExpressionStatement() {
 ExpressionNode*
 Parser::parseExpressionNode() {
   ExpressionNode *node = NULL;
-  if((node = parseTermNode()) != NULL) {
+  if((node = parseMulNode()) != NULL) {
     return node;
   }
+}
+
+ExpressionNode *
+Parser::parseMulNode() {
+  auto node1 = parseTermNode();
+  if(node1 == NULL) {
+    return NULL;
+  }
+  if(!(isValidAt(getIndex(), Type::KW_MUL) ||
+    isValidAt(getIndex(), Type::KW_DIV))) {
+    return node1;
+  }
+  Token token = consumeNext();
+  auto node2 = parseMulNode();
+  if(node2 == NULL) {
+    throw runtime_error("Unsupported grammar: needs Mul node");
+  }
+  return new MulExpressionNode(node1, node2, token.getType());
 }
 
 ExpressionNode *
@@ -88,6 +106,13 @@ Parser::consume(Type type) {
     return token;
   }
   throw runtime_error("");
+}
+
+Token
+Parser::consumeNext() {
+  Token token = getTokens()[getIndex()];
+  getIndex()++;
+  return token;
 }
 
 Token
