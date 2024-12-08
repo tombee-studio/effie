@@ -11,6 +11,7 @@ Parser::parse() {
       if(!isValidAt(getIndex(), Type::KW_SEMICOLON)) {
         throw runtime_error("expected token: ';'");
       }
+      consumeNext();
       root->getStatemants().push_back(statement);
     }
     return root;

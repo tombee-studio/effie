@@ -259,6 +259,7 @@ main() {
   testInterpreterRun("3 * 2 == 36 / 6;", ValueObject::createIntValue(1));
   testInterpreterRun("a = 3; a;", ValueObject::createIntValue(3));
   testInterpreterRun("test(2);", ValueObject::createIntValue(6));
+  testInterpreterRun("a = 3; test(a + 1);", ValueObject::createIntValue(12));
 
   return 0;
 }
