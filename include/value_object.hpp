@@ -1,6 +1,7 @@
 #pragma once
 #include <utils.hpp>
 #include <map>
+#include <vector>
 #include <value_type.hpp>
 #include <token.hpp>
 #include <icalculatable.hpp>
@@ -8,7 +9,10 @@ using namespace std;
 
 namespace Effie {
   class ValueObject: public ICalculatable<ValueObject> {
+  public:
     typedef map<string, ValueObject> Dictionary;
+    typedef ValueObject (* Function)(vector<ValueObject>);
+    typedef map<string, Function> FunctionTable;
 
     PROPERTY(ValueType, Type, ValueType::DICTIONARY)
     GETTER(int, IntValue, 0)

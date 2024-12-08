@@ -98,6 +98,27 @@ Parser::parseMulNode() {
   return left;
 }
 
+ArgumentNode *
+Parser::parseArgumentNode() {
+  vector<ExpressionNode *> arguments;
+  if(!isValidAt(getIndex(), Type::KW_LPAREN)) {
+    return NULL;
+  }
+  consumeNext();
+  while(true) {
+    arguments.push_back(parseExpressionNode());
+    if(isValidAt(getIndex(), Type::KW_COMMA)) {
+      consumeNext();
+      continue;
+    }
+    if(isValidAt(getIndex(), Type::KW_RPAREN)) {
+      consumeNext();
+      break;
+    }
+  }
+  return new ArgumentNode(arguments);
+}
+
 ExpressionNode *
 Parser::parseTermNode() {
   if(isValidAt(getIndex(), Type::INT) ||
@@ -109,8 +130,13 @@ Parser::parseTermNode() {
   }
 
   if(isValidAt(getIndex(), Type::ID)) {
-    Token token = consumeValue();
-    return new VariableNode(ValueObject::createValueFrom(token));
+    Token token = consumeNext();
+    auto argument = parseArgumentNode();
+    if(argument == NULL) {
+      return new VariableNode(ValueObject::createValueFrom(token));
+    } else {
+      return new CallFunctionNode(token.getId(), argument);
+    }
   }
 
   if(isValidAt(getIndex(), Type::KW_LPAREN)) {

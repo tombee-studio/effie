@@ -102,6 +102,27 @@ TermNode::lcompile(vector<MnemonicCode>& codes) {
 }
 
 void
+ArgumentNode::compile(vector<MnemonicCode>& codes) {
+  for(auto arg: getArguments()) {
+    arg->compile(codes);
+  }
+}
+
+void
+CallFunctionNode::compile(vector<MnemonicCode>& codes) {
+  getArgument()->compile(codes);
+  codes.push_back(MnemonicCode(
+    Mnemonic::CALL, 
+    ValueObject::createIdValue(getName()),
+    ValueObject::createIntValue(getArgument()->size())));
+}
+
+void
+CallFunctionNode::lcompile(vector<MnemonicCode>& codes) {
+  compile(codes);
+}
+
+void
 VariableNode::compile(vector<MnemonicCode>& codes) {
   codes.push_back(MnemonicCode(Mnemonic::VAR, getName()));
   codes.push_back(MnemonicCode(Mnemonic::REF));

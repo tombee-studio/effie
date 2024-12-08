@@ -115,6 +115,33 @@ namespace Effie {
     virtual void lcompile(vector<MnemonicCode>& codes) override;
   };
 
+  class ArgumentNode: public Node {
+    PRIVATE_PROPERTY(vector<ExpressionNode *>, Arguments, vector<ExpressionNode *>())
+  public:
+    ArgumentNode(vector<ExpressionNode *> arguments) {
+      setArguments(arguments);
+    }
+    
+    virtual void compile(vector<MnemonicCode>&) override;
+
+    int size() {
+      return getArguments().size();
+    }
+  };
+
+  class CallFunctionNode: public ExpressionNode {
+    PRIVATE_PROPERTY(string, Name, "")
+    PRIVATE_PROPERTY(ArgumentNode *, Argument, NULL)
+  public:
+    CallFunctionNode(string name, ArgumentNode *argument) {
+      setName(name);
+      setArgument(argument);
+    }
+
+    virtual void compile(vector<MnemonicCode>&) override;
+    virtual void lcompile(vector<MnemonicCode>& codes) override;
+  };
+
   class VariableNode: public ExpressionNode {
     PRIVATE_PROPERTY(ValueObject, Name, ValueObject::createNone())
   public:

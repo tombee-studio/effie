@@ -1,9 +1,11 @@
 #pragma once
+#include <value_object.hpp>
 #include <utils.hpp>
 #include <iinterpreter.hpp>
 #include <vector>
 #include <stack>
 #include <queue>
+#include <map>
 using namespace std;
 
 namespace Effie {
@@ -31,6 +33,11 @@ namespace Effie {
       int,
       ProgramCount,
       0
+    )
+    GETTER(
+      ValueObject::FunctionTable,
+      FunctionTable,
+      ValueObject::FunctionTable()
     )
   public:
     Interpreter() {}
@@ -60,6 +67,7 @@ namespace Effie {
     virtual void ref(MnemonicCode code);
     virtual void var(MnemonicCode code);
     virtual void je(MnemonicCode code);
+    virtual void call(MnemonicCode code);
     virtual void exit(MnemonicCode code);
     virtual void nop(MnemonicCode code);
   };

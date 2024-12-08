@@ -204,6 +204,20 @@ Interpreter::je(MnemonicCode code) {
 }
 
 void
+Interpreter::call(MnemonicCode code) {
+  string name = code.getValue1().getId();
+  int counts = code.getValue2().getIntValue();
+  auto table = getFunctionTable();
+  vector<ValueObject> args;
+  for(int i = 0; i < counts; i++) {
+    ValueObject value = getStack().top();
+    args.insert(args.begin(), value);
+    getStack().pop();
+  }
+  getStack().push(table[name](args));
+}
+
+void
 Interpreter::exit(MnemonicCode code) {
   getIsRunning() = false;
 }
@@ -271,6 +285,9 @@ Interpreter::runMnemonic(MnemonicCode code) {
     break;
   case Mnemonic::JE:
     je(code);
+    break;
+  case Mnemonic::CALL:
+    call(code);
     break;
   case Mnemonic::EXIT:
     exit(code);

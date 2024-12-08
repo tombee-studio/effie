@@ -30,5 +30,7 @@ namespace Effie {
     ExpressionNode* parseAddNode();
     ExpressionNode* parseMulNode();
     ExpressionNode* parseTermNode();
+  
+    ArgumentNode* parseArgumentNode();
   };
 }

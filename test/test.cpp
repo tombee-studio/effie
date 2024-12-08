@@ -54,6 +54,12 @@ testParser(string text) {
   cout << "OK! " << text << endl;
 }
 
+ValueObject
+test(vector<ValueObject> arguments) {
+  auto value = arguments[0];
+  return value.mul(ValueObject::createIntValue(3));
+}
+
 void
 testInterpreterRun(string source, ValueObject target) {
   auto tokens = Lexer(source).lex();
@@ -62,6 +68,7 @@ testInterpreterRun(string source, ValueObject target) {
   vector<MnemonicCode> codes;
   root->compile(codes);
   Interpreter interpreter;
+  interpreter.getFunctionTable()["test"] = test;
   interpreter.setMnemonics(codes);
   interpreter.run();
   assert(interpreter.getReturnValue().eq(target).getIntValue() == 1);
@@ -251,6 +258,7 @@ main() {
   testInterpreterRun("3 % 2 + 1;", ValueObject::createIntValue(2));
   testInterpreterRun("3 * 2 == 36 / 6;", ValueObject::createIntValue(1));
   testInterpreterRun("a = 3; a;", ValueObject::createIntValue(3));
+  testInterpreterRun("test(2);", ValueObject::createIntValue(6));
 
   return 0;
 }
