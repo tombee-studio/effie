@@ -7,10 +7,21 @@ TermNode::compile(vector<MnemonicCode>& codes) {
 }
 
 void
+TermNode::lcompile(vector<MnemonicCode>& codes) {
+  compile(codes);
+}
+
+void
 VariableNode::compile(vector<MnemonicCode>& codes) {
   codes.push_back(MnemonicCode(Mnemonic::VAR, getName()));
   codes.push_back(MnemonicCode(Mnemonic::REF));
   codes.push_back(MnemonicCode(Mnemonic::GET));
+}
+
+void
+VariableNode::lcompile(vector<MnemonicCode>& codes) {
+  codes.push_back(MnemonicCode(Mnemonic::VAR, getName()));
+  codes.push_back(MnemonicCode(Mnemonic::REF));
 }
 
 void

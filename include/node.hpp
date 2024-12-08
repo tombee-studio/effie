@@ -18,7 +18,8 @@ namespace Effie {
   public:
     virtual ~ExpressionNode() {}
 
-    virtual void compile(vector<MnemonicCode>&) override {}
+    virtual void compile(vector<MnemonicCode>&) = 0;
+    virtual void lcompile(vector<MnemonicCode>& codes) = 0;
   };
 
   class BinaryExpressionNode: public ExpressionNode {
@@ -35,8 +36,6 @@ namespace Effie {
       delete _LExp;
       delete _RExp;
     }
-
-    void compile(vector<MnemonicCode>& codes) override;
   };
 
   class TermNode: public ExpressionNode {
@@ -50,7 +49,8 @@ namespace Effie {
 
     }
 
-    void compile(vector<MnemonicCode>& codes) override;
+    virtual void compile(vector<MnemonicCode>& codes) override;
+    virtual void lcompile(vector<MnemonicCode>& codes) override;
   };
 
   class VariableNode: public ExpressionNode {
@@ -62,14 +62,15 @@ namespace Effie {
 
     ~VariableNode() override {}
 
-    void compile(vector<MnemonicCode>& codes) override;
+    virtual void compile(vector<MnemonicCode>& codes) override;
+    virtual void lcompile(vector<MnemonicCode>& codes) override;
   };
 
   class StatementNode: public Node {
   public:
     virtual ~StatementNode() {}
 
-    virtual void compile(vector<MnemonicCode>& codes) override {}
+    virtual void compile(vector<MnemonicCode>& codes) = 0;
   };
 
   class ExpressionStatementNode: public StatementNode {
@@ -81,7 +82,7 @@ namespace Effie {
       delete _Expr;
     }
 
-    void compile(vector<MnemonicCode>& codes) override;
+    virtual void compile(vector<MnemonicCode>& codes) override;
   };
 
   class RootNode: public Node {
@@ -95,6 +96,6 @@ namespace Effie {
       }
     }
 
-    void compile(vector<MnemonicCode>&) override;
+    virtual void compile(vector<MnemonicCode>&) override;
   };
 }
