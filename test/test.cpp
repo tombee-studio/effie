@@ -216,6 +216,18 @@ main() {
   }, ValueObject::createIntValue(3));
   assert(targetValue1.getIntValue() == 3);
 
+  testInterpreter({
+    MnemonicCode(Mnemonic::NOP),
+    MnemonicCode(Mnemonic::PUSH, ValueObject::createBoolValue(true)),
+    MnemonicCode(Mnemonic::JE, ValueObject::createIntValue(5)),
+    MnemonicCode(Mnemonic::NOP),
+    MnemonicCode(Mnemonic::NOP),
+    MnemonicCode(Mnemonic::NOP),
+    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
+    MnemonicCode(Mnemonic::NOP),
+    MnemonicCode(Mnemonic::EXIT)
+  }, ValueObject::createIntValue(3));
+
   testParser("3;");
   testParser("a;");
   testParser("\"Hello, World\";");

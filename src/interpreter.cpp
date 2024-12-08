@@ -192,6 +192,15 @@ Interpreter::var(MnemonicCode code) {
 
 void
 Interpreter::je(MnemonicCode code) {
+  ValueObject value = getStack().top();
+  getStack().pop();
+  int next = code.getValue1().getIntValue();
+  if(value.getType() != ValueType::BOOL) {
+    throw runtime_error("condition must be boolean");
+  }
+  if(value.getIntValue() > 0) {
+    getProgramCount() = next;
+  }
 }
 
 void
