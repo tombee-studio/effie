@@ -229,6 +229,7 @@ main() {
   testInterpreterRun("3 % 2", ValueObject::createIntValue(1));
   testInterpreterRun("3 % 2 + 1", ValueObject::createIntValue(2));
   testInterpreterRun("3 * 2 == 36 / 6", ValueObject::createIntValue(1));
+  testInterpreterRun("a = 3", ValueObject::createIntValue(3));
 
   return 0;
 }

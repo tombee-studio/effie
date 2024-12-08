@@ -2,6 +2,18 @@
 using namespace Effie;
 
 void
+AssignmentExpressionNode::compile(vector<MnemonicCode>& codes) {
+  getLExp()->lcompile(codes);
+  getRExp()->compile(codes);
+  codes.push_back(MnemonicCode(Mnemonic::MOV));
+}
+
+void
+AssignmentExpressionNode::lcompile(vector<MnemonicCode>& codes) {
+  compile(codes);
+}
+
+void
 ComparisonExpressionNode::compile(vector<MnemonicCode>& codes) {
   getLExp()->compile(codes);
   getRExp()->compile(codes);

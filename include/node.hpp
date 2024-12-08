@@ -38,6 +38,20 @@ namespace Effie {
     }
   };
 
+  class AssignmentExpressionNode: public BinaryExpressionNode {
+  public:
+    AssignmentExpressionNode(ExpressionNode *lexp, ExpressionNode *rexp): 
+      BinaryExpressionNode(lexp, rexp){
+    }
+
+    ~AssignmentExpressionNode() override {
+      BinaryExpressionNode::~BinaryExpressionNode();
+    }
+
+    virtual void compile(vector<MnemonicCode>& codes) override;
+    virtual void lcompile(vector<MnemonicCode>& codes) override;
+  };
+
   class ComparisonExpressionNode: public BinaryExpressionNode {
     PRIVATE_PROPERTY(Type, Type, Type::NONE)
   public:

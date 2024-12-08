@@ -38,9 +38,20 @@ Parser::parseExpressionStatement() {
 ExpressionNode*
 Parser::parseExpressionNode() {
   ExpressionNode *node = NULL;
-  if((node = parseComparisonNode()) != NULL) {
+  if((node = parseAssignmentNode()) != NULL) {
     return node;
   }
+}
+
+ExpressionNode *
+Parser::parseAssignmentNode() {
+  auto left = parseComparisonNode();
+  if(!isValidAt(getIndex(), Type::KW_EQUAL)) {
+    return left;
+  }
+  Token token = consumeNext();
+  auto right = parseComparisonNode();
+  return new AssignmentExpressionNode(left, right);
 }
 
 ExpressionNode *
