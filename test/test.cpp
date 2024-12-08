@@ -61,9 +61,6 @@ testInterpreterRun(string source, ValueObject target) {
   auto root = parser.parse();
   vector<MnemonicCode> codes;
   root->compile(codes);
-  for(auto code: codes) {
-    cout << (int)code.getOpCode() << " " << code.getValue1().getIntValue() << endl;
-  }
   Interpreter interpreter;
   interpreter.setMnemonics(codes);
   interpreter.run();
@@ -221,11 +218,14 @@ main() {
   testParser("3%2");
   testParser("3 * 2");
   testParser("3 * 2 / 5 % 2");
+  testParser("3 * 2 / 5 % 2 + 1 - 2");
 
   testInterpreterRun("3", ValueObject::createIntValue(3));
   testInterpreterRun("(1)", ValueObject::createIntValue(1));
   testInterpreterRun("3 * 2", ValueObject::createIntValue(6));
   testInterpreterRun("15 / 5", ValueObject::createIntValue(3));
+  testInterpreterRun("15 / 5 + 3", ValueObject::createIntValue(6));
+  testInterpreterRun("3 % 2", ValueObject::createIntValue(1));
 
   return 0;
 }

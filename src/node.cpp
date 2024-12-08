@@ -2,6 +2,30 @@
 using namespace Effie;
 
 void
+AddExpressionNode::compile(vector<MnemonicCode>& codes) {
+  getLExp()->compile(codes);
+  getRExp()->compile(codes);
+  switch(getType()) {
+  case Type::KW_ADD:
+    codes.push_back(MnemonicCode(Mnemonic::ADD));
+    return;
+  case Type::KW_SUB:
+    codes.push_back(MnemonicCode(Mnemonic::SUB));
+    return;
+  case Type::KW_MOD:
+    codes.push_back(MnemonicCode(Mnemonic::MOD));
+    return;
+  default:
+    throw runtime_error("unsupported operator");
+  }
+}
+
+void
+AddExpressionNode::lcompile(vector<MnemonicCode>& codes) {
+  compile(codes);
+}
+
+void
 MulExpressionNode::compile(vector<MnemonicCode>& codes) {
   getLExp()->compile(codes);
   getRExp()->compile(codes);

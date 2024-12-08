@@ -38,9 +38,28 @@ Parser::parseExpressionStatement() {
 ExpressionNode*
 Parser::parseExpressionNode() {
   ExpressionNode *node = NULL;
-  if((node = parseMulNode()) != NULL) {
+  if((node = parseAddNode()) != NULL) {
     return node;
   }
+}
+
+ExpressionNode *
+Parser::parseAddNode() {
+  auto node1 = parseMulNode();
+  if(node1 == NULL) {
+    return NULL;
+  }
+  if(!(isValidAt(getIndex(), Type::KW_ADD) ||
+    isValidAt(getIndex(), Type::KW_SUB) ||
+    isValidAt(getIndex(), Type::KW_MOD))) {
+    return node1;
+  }
+  Token token = consumeNext();
+  auto node2 = parseAddNode();
+  if(node2 == NULL) {
+    throw runtime_error("Unsupported grammar: needs Add node");
+  }
+  return new AddExpressionNode(node1, node2, token.getType());
 }
 
 ExpressionNode *
