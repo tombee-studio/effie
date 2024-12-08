@@ -207,29 +207,29 @@ main() {
   }, ValueObject::createIntValue(3));
   assert(targetValue1.getIntValue() == 3);
 
-  testParser("3");
-  testParser("a");
-  testParser("\"Hello, World\"");
-  testParser("1.3");
-  testParser("(3)");
-  testParser("a");
-  testParser("3*2");
-  testParser("3/2");
-  testParser("3%2");
-  testParser("3 * 2");
-  testParser("3 * 2 / 5 % 2");
-  testParser("3 * 2 / 5 % 2 + 1 - 2");
-  testParser("3 * 2 == 36 / 6");
+  testParser("3;");
+  testParser("a;");
+  testParser("\"Hello, World\";");
+  testParser("1.3;");
+  testParser("(3);");
+  testParser("a;");
+  testParser("3*2;");
+  testParser("3/2;");
+  testParser("3%2;");
+  testParser("3 * 2;");
+  testParser("3 * 2 / 5 % 2;");
+  testParser("3 * 2 / 5 % 2 + 1 - 2;");
+  testParser("3 * 2 == 36 / 6;");
 
-  testInterpreterRun("3", ValueObject::createIntValue(3));
-  testInterpreterRun("(1)", ValueObject::createIntValue(1));
-  testInterpreterRun("3 * 2", ValueObject::createIntValue(6));
-  testInterpreterRun("15 / 5", ValueObject::createIntValue(3));
-  testInterpreterRun("15 / 5 + 3", ValueObject::createIntValue(6));
-  testInterpreterRun("3 % 2", ValueObject::createIntValue(1));
-  testInterpreterRun("3 % 2 + 1", ValueObject::createIntValue(2));
-  testInterpreterRun("3 * 2 == 36 / 6", ValueObject::createIntValue(1));
-  testInterpreterRun("a = 3", ValueObject::createIntValue(3));
+  testInterpreterRun("3;", ValueObject::createIntValue(3));
+  testInterpreterRun("(1);", ValueObject::createIntValue(1));
+  testInterpreterRun("3 * 2;", ValueObject::createIntValue(6));
+  testInterpreterRun("15 / 5;", ValueObject::createIntValue(3));
+  testInterpreterRun("15 / 5 + 3;", ValueObject::createIntValue(6));
+  testInterpreterRun("3 % 2;", ValueObject::createIntValue(1));
+  testInterpreterRun("3 % 2 + 1;", ValueObject::createIntValue(2));
+  testInterpreterRun("3 * 2 == 36 / 6;", ValueObject::createIntValue(1));
+  testInterpreterRun("a = 3; a;", ValueObject::createIntValue(3));
 
   return 0;
 }
