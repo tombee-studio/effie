@@ -6,6 +6,7 @@ Lexer::lex() {
   Token token;
   while(true) {
     if(_index >= _text.size()) {
+      tokens.push_back(Token::createNone());
       return tokens;
     }
     if(skipSpace()) continue;

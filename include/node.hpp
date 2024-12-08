@@ -23,8 +23,8 @@ namespace Effie {
 
   class BinaryExpressionNode: public ExpressionNode {
   protected:
-    PRIVATE_PROPERTY(ExpressionNode *, LExp, NULL)
-    PRIVATE_PROPERTY(ExpressionNode *, RExp, NULL)
+    GETTER(ExpressionNode *, LExp, NULL)
+    GETTER(ExpressionNode *, RExp, NULL)
   public:
     BinaryExpressionNode(ExpressionNode *lexp, ExpressionNode *rexp) {
       setLExp(lexp);
@@ -34,6 +34,18 @@ namespace Effie {
     ~BinaryExpressionNode() override {
       delete _LExp;
       delete _RExp;
+    }
+
+    void compile(vector<MnemonicCode>& codes) override;
+  };
+
+  class MulExpressionNode: public BinaryExpressionNode {
+  public:
+    MulExpressionNode(ExpressionNode *lexp, ExpressionNode *rexp): 
+      BinaryExpressionNode(lexp, rexp) {}
+
+    ~MulExpressionNode() override {
+      BinaryExpressionNode::~BinaryExpressionNode();
     }
 
     void compile(vector<MnemonicCode>& codes) override;

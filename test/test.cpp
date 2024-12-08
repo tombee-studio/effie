@@ -100,36 +100,41 @@ main() {
   testToken("true", Type::KW_TRUE);
   testToken("false", Type::KW_FALSE);
 
-  testLex("abc abc abc", { Type::ID, Type::ID, Type::ID });
-  testLex("abc 1000 1234567890.0123456789", { Type::ID, Type::INT, Type::DOUBLE });
+  testLex("abc abc abc", { Type::ID, Type::ID, Type::ID, Type::NONE });
+  testLex("abc 1000 1234567890.0123456789", { Type::ID, Type::INT, Type::DOUBLE, Type::NONE });
   testLex(
     "(1, 10.3, 1)", 
-    { Type::KW_LPAREN, Type::INT, Type::KW_COMMA, Type::DOUBLE, Type::KW_COMMA, Type::INT, Type::KW_RPAREN });
+    { Type::KW_LPAREN, Type::INT, Type::KW_COMMA, Type::DOUBLE, Type::KW_COMMA, Type::INT, Type::KW_RPAREN, Type::NONE });
   testLex(
     ">=><=<!+-*/%!====", 
     { Type::KW_GE, Type::KW_GT, Type::KW_LE, Type::KW_LT, Type::KW_NOT, Type::KW_ADD,
-      Type::KW_SUB, Type::KW_MUL, Type::KW_DIV, Type::KW_MOD, Type::KW_NE, Type::KW_EQ, Type::KW_EQUAL });
+      Type::KW_SUB, Type::KW_MUL, Type::KW_DIV, Type::KW_MOD, Type::KW_NE, Type::KW_EQ, Type::KW_EQUAL, 
+      Type::NONE });
   testLex(
     "a = \"Hello, World!\";",
-    { Type::ID, Type::KW_EQUAL, Type::STRING, Type::KW_SEMICOLON }
+    { Type::ID, Type::KW_EQUAL, Type::STRING, Type::KW_SEMICOLON, Type::NONE }
   );
   testLex(
     "obj[\"引数\"]",
-    { Type::ID, Type::KW_LBRACKET, Type::STRING, Type::KW_RBRACKET }
+    { Type::ID, Type::KW_LBRACKET, Type::STRING, Type::KW_RBRACKET, Type::NONE }
   );
   testLex(
     "obj0123456789",
-    { Type::ID }
+    { Type::ID, Type::NONE }
   );
   testLex(
     "0123456789obj",
-    { Type::INT, Type::ID }
+    { Type::INT, Type::ID, Type::NONE }
   );
   testLex(
     "true1",
-    { Type::KW_TRUE, Type::INT }
+    { Type::KW_TRUE, Type::INT, Type::NONE }
   );
-  testLex("", {});
+  testLex(
+    "(3)",
+    { Type::KW_LPAREN, Type::INT, Type::KW_RPAREN, Type::NONE }
+  );
+  testLex("", { Type::NONE });
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
@@ -206,8 +211,10 @@ main() {
   testParser("a");
   testParser("\"Hello, World\"");
   testParser("1.3");
+  testParser("(3)");
 
   testInterpreterRun("3", ValueObject::createIntValue(3));
+  testInterpreterRun("(3)", ValueObject::createIntValue(3));
 
   return 0;
 }

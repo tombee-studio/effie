@@ -53,7 +53,20 @@ Parser::parseTermNode() {
       return new TermNode(
         ValueObject::createValueFrom(token));
   }
-  return NULL;
+
+  if(isValidAt(getIndex(), Type::KW_LPAREN)) {
+    consume(Type::KW_LPAREN);
+  } else {
+    return NULL;
+  }
+
+  auto node = parseExpressionNode();
+  if(isValidAt(getIndex(), Type::KW_RPAREN)) {
+    consume(Type::KW_RPAREN);
+  } else {
+    throw runtime_error("expected '(' at " + getIndex());
+  }
+  return node;
 }
 
 bool
