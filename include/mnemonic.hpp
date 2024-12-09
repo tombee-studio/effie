@@ -21,6 +21,7 @@ namespace Effie {
     REF,
     VAR,
     JE,
+    JMP,
     CALL,
     EXIT,
     NOP

@@ -235,6 +235,17 @@ main() {
     MnemonicCode(Mnemonic::EXIT)
   }, ValueObject::createIntValue(3));
 
+  testInterpreter({
+    MnemonicCode(Mnemonic::NOP),
+    MnemonicCode(Mnemonic::JMP, ValueObject::createIntValue(5)),
+    MnemonicCode(Mnemonic::NOP),
+    MnemonicCode(Mnemonic::NOP),
+    MnemonicCode(Mnemonic::NOP),
+    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
+    MnemonicCode(Mnemonic::NOP),
+    MnemonicCode(Mnemonic::EXIT)
+  }, ValueObject::createIntValue(3));
+
   testParser("3;");
   testParser("a;");
   testParser("\"Hello, World\";");

@@ -204,6 +204,12 @@ Interpreter::je(MnemonicCode code) {
 }
 
 void
+Interpreter::jmp(MnemonicCode code) {
+  int next = code.getValue1().getIntValue();
+  getProgramCount() = next;
+}
+
+void
 Interpreter::call(MnemonicCode code) {
   string name = code.getValue1().getId();
   int counts = code.getValue2().getIntValue();
