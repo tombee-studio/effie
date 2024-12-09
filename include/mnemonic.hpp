@@ -19,7 +19,11 @@ namespace Effie {
     NT,
     GET,
     REF,
+    VAR,
+    JE,
     JMP,
+    CALL,
+    EXIT,
     NOP
   };
 }

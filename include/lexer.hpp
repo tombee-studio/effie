@@ -7,17 +7,25 @@ using namespace std;
 
 namespace Effie {
   class Lexer {
+    string _text;
+    const char *_cText;
+    int _index;
+    vector<Token> tokens;
   public:
-    static vector<Token> lex(string text);
-  private:
-    static bool skipSpace(const char *, int& start);
-    static bool lexKW(vector<Token>& tokens, const char *, int& start, string keyword, Type type);
-    static bool lexInt(vector<Token>& tokens, const char *, int& start);
-    static bool lexDouble(vector<Token>& tokens, const char *, int& start);
-    static bool lexId(vector<Token>& tokens, const char *, int& start);
-    static bool lexString(vector<Token>& tokens, const char *, int& start);
+    Lexer(string text): _text(text), _index(0) {
+      _cText = text.data();
+    }
 
-    static bool isIdentifier(char);
-    static bool isNumber(char);
+    vector<Token> lex();
+  private:
+    bool skipSpace();
+    bool lexKW(string keyword, Type type);
+    bool lexInt();
+    bool lexDouble();
+    bool lexId();
+    bool lexString();
+
+    bool isIdentifier(char);
+    bool isNumber(char);
   };
 };

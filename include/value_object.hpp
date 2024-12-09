@@ -1,6 +1,7 @@
 #pragma once
 #include <utils.hpp>
 #include <map>
+#include <vector>
 #include <value_type.hpp>
 #include <token.hpp>
 #include <icalculatable.hpp>
@@ -8,14 +9,18 @@ using namespace std;
 
 namespace Effie {
   class ValueObject: public ICalculatable<ValueObject> {
+  public:
     typedef map<string, ValueObject> Dictionary;
+    typedef ValueObject (* Function)(vector<ValueObject>);
+    typedef map<string, Function> FunctionTable;
 
     PROPERTY(ValueType, Type, ValueType::DICTIONARY)
     GETTER(int, IntValue, 0)
-    PRIVATE_PROPERTY(double, DoubleValue, 0.0)
-    PRIVATE_PROPERTY(string, Id, "")
-    PRIVATE_PROPERTY(Dictionary, Dictionary, Dictionary())
-    PRIVATE_PROPERTY(ValueObject *, Pointer, NULL);
+    GETTER(double, DoubleValue, 0.0)
+    GETTER(string, Id, "")
+    GETTER(string, StringValue, "")
+    GETTER(Dictionary, Dictionary, Dictionary())
+    GETTER(ValueObject *, Pointer, NULL);
 
   public:
     static ValueObject createNone() {
@@ -38,6 +43,20 @@ namespace Effie {
       return value;
     }
 
+    static ValueObject createStringValue(string stringValue) {
+      ValueObject value;
+      value.setStringValue(stringValue);
+      value.setType(ValueType::STRING);
+      return value;
+    }
+
+    static ValueObject createIdValue(string idValue) {
+      ValueObject value;
+      value.setId(idValue);
+      value.setType(ValueType::ID);
+      return value;
+    }
+
     static ValueObject createPointer(ValueObject *pointer) {
       ValueObject value;
       value.setPointer(pointer);
@@ -57,8 +76,12 @@ namespace Effie {
         value.setDoubleValue(token.getDoubleVal());
         break;
       case Type::ID:
-        value.setType(ValueType::STRING);
+        value.setType(ValueType::ID);
         value.setId(token.getId());
+        break;
+      case Type::STRING:
+        value.setType(ValueType::STRING);
+        value.setStringValue(token.getStringVal());
         break;
       case Type::KW_TRUE:
         value.setType(ValueType::BOOL);
