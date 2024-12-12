@@ -22,6 +22,7 @@ namespace Effie {
 
     RootNode* parseRoot();
     StatementNode* parseStatement();
+    StatementNode* parseIfStatement();
     ExpressionStatementNode* parseExpressionStatement();
 
     ExpressionNode* parseExpressionNode();

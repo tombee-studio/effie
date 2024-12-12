@@ -10,6 +10,10 @@ Lexer::lex() {
       return tokens;
     }
     if(skipSpace()) continue;
+    if(lexKW("if", Type::KW_IF)) continue;
+    if(lexKW("elif", Type::KW_ELIF)) continue;
+    if(lexKW("else", Type::KW_ELSE)) continue;
+    if(lexKW("end", Type::KW_END)) continue;
     if(lexKW("==", Type::KW_EQ)) continue;
     if(lexKW("true", Type::KW_TRUE)) continue;
     if(lexKW("false", Type::KW_FALSE)) continue;
