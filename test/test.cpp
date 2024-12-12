@@ -67,10 +67,6 @@ testInterpreterRun(string source, ValueObject target) {
   auto root = parser.parse();
   vector<MnemonicCode> codes;
   root->compile(codes);
-  for(int i = 0; i < codes.size(); i++) {
-    auto code = codes[i];
-    printf("%5d %5d %5d\n", i, (int)code.getOpCode(), code.getValue1().getIntValue());
-  }
   Interpreter interpreter;
   interpreter.getFunctionTable()["test"] = test;
   interpreter.setMnemonics(codes);
