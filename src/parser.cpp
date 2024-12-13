@@ -21,10 +21,6 @@ StatementNode*
 Parser::parseStatement() {
   StatementNode *statement = NULL;
   if((statement = parseExpressionStatement()) != NULL) {
-    if(!isValidAt(getIndex(), Type::KW_SEMICOLON)) {
-      throw runtime_error("expected token: ';'");
-    }
-    consumeNext();
     return statement;
   }
   if((statement = parseIfStatement()) != NULL) {
@@ -42,10 +38,6 @@ Parser::parseIfStatement() {
   consumeNext();
 
   auto condition = parseExpressionNode();
-  if(!isValidAt(getIndex(), Type::KW_COLON)) {
-    throw runtime_error("expected: ':'");
-  }
-  consumeNext();
   
   StatementNode* trueStatement = parseStatement();
   vector<ElifStatementNode *> elifStatements;
@@ -71,6 +63,10 @@ ExpressionStatementNode*
 Parser::parseExpressionStatement() {
   ExpressionNode *node = NULL;
   if((node = parseExpressionNode()) != NULL) {
+    if(!isValidAt(getIndex(), Type::KW_SEMICOLON)) {
+      throw runtime_error("expected token: ';'");
+    }
+    consumeNext();
     return new ExpressionStatementNode(node);
   }
   return NULL;

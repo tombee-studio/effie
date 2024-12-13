@@ -137,22 +137,34 @@ VariableNode::lcompile(vector<MnemonicCode>& codes) {
 
 void
 IfStatementNode::compile(vector<MnemonicCode>& codes) {
+  auto skipIndexes = vector<int>();
   codes.push_back(MnemonicCode(Mnemonic::POP));
   getCondition()->compile(codes);
 
   int startIndex = codes.size();
   codes.push_back(MnemonicCode(Mnemonic::JNE, ValueObject::createIntValue(0)));
   getTrueStatement()->compile(codes);
-  int elseIndex = codes.size();
+  skipIndexes.push_back(codes.size());
   codes.push_back(MnemonicCode(Mnemonic::JMP, ValueObject::createIntValue(0)));
+  for(auto statement: getElifStatements()) {
+    codes[startIndex] = MnemonicCode(Mnemonic::JNE, ValueObject::createIntValue(codes.size()));
+    codes.push_back(MnemonicCode(Mnemonic::POP));
+    statement->getCondition()->compile(codes);
+    startIndex = codes.size();
+    codes.push_back(MnemonicCode(Mnemonic::JNE, ValueObject::createIntValue(0)));
+    statement->getTrueStatement()->compile(codes);
+    skipIndexes.push_back(codes.size());
+    codes.push_back(MnemonicCode(Mnemonic::JMP, ValueObject::createIntValue(0)));
+  }
   codes[startIndex] = MnemonicCode(Mnemonic::JNE, ValueObject::createIntValue(codes.size()));
   getElseStatement()->compile(codes);
-  codes[elseIndex] = MnemonicCode(Mnemonic::JMP, ValueObject::createIntValue(codes.size()));
+  for(auto skipIndex: skipIndexes) {
+    codes[skipIndex] = MnemonicCode(Mnemonic::JMP, ValueObject::createIntValue(codes.size()));
+  }
 }
 
 void
 ElifStatementNode::compile(vector<MnemonicCode>& codes) {
-  
 }
 
 void
