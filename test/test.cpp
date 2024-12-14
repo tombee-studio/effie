@@ -282,8 +282,8 @@ main() {
     "a = 2; if a == 2 then a = 3; else a = 1; end a;", 
     ValueObject::createIntValue(3));
   testInterpreterRun(
-    "a = 3; if a == 1 then: b = 4; b = 5; elif a == 3 then b = 5; else b = 6; end b;", 
-    ValueObject::createIntValue(5));
+    "a = 1; if a == 1 then: b = 4; b = 7; elif a == 3 then b = 5; else b = 6; end b;", 
+    ValueObject::createIntValue(7));
 
   return 0;
 }
