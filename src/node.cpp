@@ -191,7 +191,9 @@ IfStatementNode::compile(vector<MnemonicCode>& codes) {
     codes.push_back(MnemonicCode(Mnemonic::JMP, Object::createIntValue(0)));
   }
   codes[startIndex] = MnemonicCode(Mnemonic::JNE, Object::createIntValue(codes.size()));
-  getElseStatement()->compile(codes);
+  if(getElseStatement() != NULL) {
+    getElseStatement()->compile(codes);
+  }
   for(auto skipIndex: skipIndexes) {
     codes[skipIndex] = MnemonicCode(Mnemonic::JMP, Object::createIntValue(codes.size()));
   }
