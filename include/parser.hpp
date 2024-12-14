@@ -35,5 +35,6 @@ namespace Effie {
     ExpressionNode* parseTermNode();
   
     ArgumentNode* parseArgumentNode();
+    SubscriptOperatorNode *parseSubscriptOperator();
   };
 }

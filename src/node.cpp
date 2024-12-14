@@ -123,16 +123,29 @@ CallFunctionNode::lcompile(vector<MnemonicCode>& codes) {
 }
 
 void
+SubscriptOperatorNode::compile(vector<MnemonicCode>& codes) {
+  for(auto subscript: getSubscripts()) {
+    codes.push_back(MnemonicCode(Mnemonic::REF, Object::createIdValue(subscript)));
+  }
+}
+
+void
 VariableNode::compile(vector<MnemonicCode>& codes) {
-  codes.push_back(MnemonicCode(Mnemonic::VAR, getName()));
-  codes.push_back(MnemonicCode(Mnemonic::REF));
+  codes.push_back(MnemonicCode(Mnemonic::VAR));
+  codes.push_back(MnemonicCode(Mnemonic::REF, getName()));
+  if(getSubscriptOperator() != NULL) {
+    getSubscriptOperator()->compile(codes);
+  }
   codes.push_back(MnemonicCode(Mnemonic::GET));
 }
 
 void
 VariableNode::lcompile(vector<MnemonicCode>& codes) {
-  codes.push_back(MnemonicCode(Mnemonic::VAR, getName()));
-  codes.push_back(MnemonicCode(Mnemonic::REF));
+  codes.push_back(MnemonicCode(Mnemonic::VAR));
+  codes.push_back(MnemonicCode(Mnemonic::REF, getName()));
+  if(getSubscriptOperator() != NULL) {
+    getSubscriptOperator()->compile(codes);
+  }
 }
 
 void

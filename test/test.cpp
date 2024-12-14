@@ -67,10 +67,6 @@ testInterpreterRun(string source, Object target) {
   auto root = parser.parse();
   vector<MnemonicCode> codes;
   root->compile(codes);
-  // for(int i = 0; i < codes.size(); i++) {
-  //   auto code = codes[i];
-  //   printf("%5d %5d %5d\n", i, (int)code.getOpCode(), (int)code.getValue1().getIntValue());
-  // }
   
   Interpreter interpreter;
   interpreter.getFunctionTable()["test"] = test;
@@ -146,6 +142,14 @@ main() {
   testLex(
     "(3)",
     { Type::KW_LPAREN, Type::INT, Type::KW_RPAREN, Type::NONE }
+  );
+  testLex(
+    "\"体力\" \"テスト\"",
+    { Type::STRING, Type::STRING, Type::NONE }
+  );
+  testLex(
+    "\"\" \"テスト\"",
+    { Type::STRING, Type::STRING, Type::NONE }
   );
   testLex("", { Type::NONE });
 
@@ -230,6 +234,22 @@ main() {
   assert(targetValue1.getIntValue() == 3);
 
   testInterpreter({
+    MnemonicCode(Mnemonic::POP),
+    MnemonicCode(Mnemonic::VAR),
+    MnemonicCode(Mnemonic::REF, Object::createIdValue("test")),
+    MnemonicCode(Mnemonic::REF, Object::createIdValue("test")),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(5)),
+    MnemonicCode(Mnemonic::MOV),
+    MnemonicCode(Mnemonic::POP),
+    MnemonicCode(Mnemonic::VAR),
+    MnemonicCode(Mnemonic::REF, Object::createIdValue("test")),
+    MnemonicCode(Mnemonic::REF, Object::createIdValue("test")),
+    MnemonicCode(Mnemonic::GET),
+    MnemonicCode(Mnemonic::EXIT)
+  }, Object::createIntValue(5));
+  assert(targetValue1.getIntValue() == 3);
+
+  testInterpreter({
     MnemonicCode(Mnemonic::NOP),
     MnemonicCode(Mnemonic::PUSH, Object::createBoolValue(true)),
     MnemonicCode(Mnemonic::JE, Object::createIntValue(5)),
@@ -286,6 +306,9 @@ main() {
     Object::createIntValue(7));
   testInterpreterRun(
     "a = 1; while a < 5: a = a + 1; end a;", 
+    Object::createIntValue(5));
+  testInterpreterRun(
+    "a[\"テスト\"] = 5; a[\"テスト\"];", 
     Object::createIntValue(5));
 
   return 0;

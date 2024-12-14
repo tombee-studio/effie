@@ -142,11 +142,26 @@ namespace Effie {
     virtual void lcompile(vector<MnemonicCode>& codes) override;
   };
 
+  class SubscriptOperatorNode: Node {
+    PRIVATE_PROPERTY(vector<string>, Subscripts, vector<string>());
+  public:
+    SubscriptOperatorNode(vector<string> subscripts) {
+      setSubscripts(subscripts);
+    }
+
+    virtual void compile(vector<MnemonicCode>&) override;
+  };
+
   class VariableNode: public ExpressionNode {
     PRIVATE_PROPERTY(Object, Name, Object::createNone())
+    PRIVATE_PROPERTY(SubscriptOperatorNode *, 
+      SubscriptOperator, 
+      NULL)
   public:
-    VariableNode(Object name) {
+    VariableNode(Object name, 
+      SubscriptOperatorNode *subscriptOperator) {
       setName(name);
+      setSubscriptOperator(subscriptOperator);
     }
 
     ~VariableNode() override {}
