@@ -26,7 +26,25 @@ Parser::parseStatement() {
   if((statement = parseIfStatement()) != NULL) {
     return statement;
   }
+  if((statement = parseBlock()) != NULL) {
+    return statement;
+  }
   return NULL;
+}
+
+StatementNode*
+Parser::parseBlock() {
+  if(!isValidAt(getIndex(), Type::KW_COLON)) {
+    return NULL;
+  }
+  consumeNext();
+  vector<StatementNode *> statements;
+  while(!(isValidAt(getIndex(), Type::KW_END) || 
+    isValidAt(getIndex(), Type::KW_ELIF) || 
+    isValidAt(getIndex(), Type::KW_ELSE))) {
+      statements.push_back(parseStatement());
+    }
+  return new BlockStatementNode(statements);
 }
 
 StatementNode* 

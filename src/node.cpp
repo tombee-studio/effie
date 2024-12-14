@@ -136,6 +136,13 @@ VariableNode::lcompile(vector<MnemonicCode>& codes) {
 }
 
 void
+BlockStatementNode::compile(vector<MnemonicCode>& codes) {
+  for(auto statement: getStatements()) {
+    statement->compile(codes);
+  }
+}
+
+void
 IfStatementNode::compile(vector<MnemonicCode>& codes) {
   auto skipIndexes = vector<int>();
   codes.push_back(MnemonicCode(Mnemonic::POP));

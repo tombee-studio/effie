@@ -162,6 +162,21 @@ namespace Effie {
     virtual void compile(vector<MnemonicCode>& codes) = 0;
   };
 
+  class BlockStatementNode: public StatementNode {
+    PRIVATE_PROPERTY(vector<StatementNode *>, Statements, vector<StatementNode *>())
+  public:
+    BlockStatementNode(
+      vector<StatementNode *> statements) {
+        setStatements(statements);
+    }
+
+    virtual ~BlockStatementNode() override {
+      StatementNode::~StatementNode();
+    }
+
+    virtual void compile(vector<MnemonicCode>& codes) override;
+  };
+
   class ElifStatementNode: public StatementNode {
     GETTER(ExpressionNode *, Condition, NULL)
     GETTER(StatementNode *, TrueStatement, NULL)
