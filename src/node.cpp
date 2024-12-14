@@ -143,6 +143,20 @@ BlockStatementNode::compile(vector<MnemonicCode>& codes) {
 }
 
 void
+WhileStatementNode::compile(vector<MnemonicCode>& codes) {
+  codes.push_back(MnemonicCode(Mnemonic::POP));
+
+  int startIndex = codes.size();
+  getCondition()->compile(codes);
+
+  int jneIndex = codes.size();
+  codes.push_back(MnemonicCode(Mnemonic::JNE, ValueObject::createIntValue(0)));
+  getBody()->compile(codes);
+  codes.push_back(MnemonicCode(Mnemonic::JMP, ValueObject::createIntValue(startIndex)));
+  codes[jneIndex] = MnemonicCode(Mnemonic::JNE, ValueObject::createIntValue(codes.size()));
+}
+
+void
 IfStatementNode::compile(vector<MnemonicCode>& codes) {
   auto skipIndexes = vector<int>();
   codes.push_back(MnemonicCode(Mnemonic::POP));

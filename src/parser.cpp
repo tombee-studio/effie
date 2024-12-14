@@ -29,7 +29,23 @@ Parser::parseStatement() {
   if((statement = parseBlock()) != NULL) {
     return statement;
   }
+  if((statement = parseWhileStatement()) != NULL) {
+    return statement;
+  }
   return NULL;
+}
+
+StatementNode*
+Parser::parseWhileStatement() {
+  if(!isValidAt(getIndex(), Type::KW_WHILE)) {
+    return NULL;
+  }
+  consumeNext();
+
+  auto condition = parseExpressionNode();
+  auto block = parseBlock();
+
+  return new WhileStatementNode(condition, block);
 }
 
 StatementNode*
@@ -44,6 +60,9 @@ Parser::parseBlock() {
     isValidAt(getIndex(), Type::KW_ELSE))) {
       statements.push_back(parseStatement());
     }
+  if(isValidAt(getIndex(), Type::KW_END)) {
+    consumeNext();
+  }
   return new BlockStatementNode(statements);
 }
 
@@ -70,10 +89,6 @@ Parser::parseIfStatement() {
     consumeNext();
     elseStatement = parseBlock();
   }
-  if(!isValidAt(getIndex(), Type::KW_END)) {
-    throw runtime_error("expected: 'end'");
-  }
-  consumeNext();
   return new IfStatementNode(condition, trueStatement, elifStatements, elseStatement);
 }
 

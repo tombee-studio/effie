@@ -111,6 +111,7 @@ main() {
   testToken("abc", Type::ID);
   testToken("true", Type::KW_TRUE);
   testToken("false", Type::KW_FALSE);
+  testToken("while", Type::KW_WHILE);
 
   testLex("abc abc abc", { Type::ID, Type::ID, Type::ID, Type::NONE });
   testLex("abc 1000 1234567890.0123456789", { Type::ID, Type::INT, Type::DOUBLE, Type::NONE });
@@ -283,6 +284,9 @@ main() {
   testInterpreterRun(
     "a = 1; if a == 1: b = 4; b = 7; elif a == 3: b = 5; else: b = 6; end b;", 
     ValueObject::createIntValue(7));
+  testInterpreterRun(
+    "a = 1; while a < 5: a = a + 1; end a;", 
+    ValueObject::createIntValue(5));
 
   return 0;
 }
