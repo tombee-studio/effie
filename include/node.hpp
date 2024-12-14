@@ -101,9 +101,9 @@ namespace Effie {
   };
 
   class TermNode: public ExpressionNode {
-    PRIVATE_PROPERTY(ValueObject, Value, ValueObject::createNone())
+    PRIVATE_PROPERTY(Object, Value, Object::createNone())
   public:
-    TermNode(ValueObject value) {
+    TermNode(Object value) {
       setValue(value);
     }
 
@@ -143,9 +143,9 @@ namespace Effie {
   };
 
   class VariableNode: public ExpressionNode {
-    PRIVATE_PROPERTY(ValueObject, Name, ValueObject::createNone())
+    PRIVATE_PROPERTY(Object, Name, Object::createNone())
   public:
-    VariableNode(ValueObject name) {
+    VariableNode(Object name) {
       setName(name);
     }
 

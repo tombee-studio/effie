@@ -8,10 +8,10 @@
 using namespace std;
 
 namespace Effie {
-  class ValueObject: public ICalculatable<ValueObject> {
+  class Object: public ICalculatable<Object> {
   public:
-    typedef map<string, ValueObject> Dictionary;
-    typedef ValueObject (* Function)(vector<ValueObject>);
+    typedef map<string, Object> Dictionary;
+    typedef Object (* Function)(vector<Object>);
     typedef map<string, Function> FunctionTable;
 
     PROPERTY(ValueType, Type, ValueType::DICTIONARY)
@@ -20,52 +20,52 @@ namespace Effie {
     GETTER(string, Id, "")
     GETTER(string, StringValue, "")
     GETTER(Dictionary, Dictionary, Dictionary())
-    GETTER(ValueObject *, Pointer, NULL);
+    GETTER(Object *, Pointer, NULL);
 
   public:
-    static ValueObject createNone() {
-      ValueObject value;
+    static Object createNone() {
+      Object value;
       value.setType(ValueType::DICTIONARY);
       return value;
     }
 
-    static ValueObject createIntValue(int ivalue) {
-      ValueObject value;
+    static Object createIntValue(int ivalue) {
+      Object value;
       value.setIntValue(ivalue);
       value.setType(ValueType::INT);
       return value;
     }
 
-    static ValueObject createBoolValue(bool boolValue) {
-      ValueObject value;
+    static Object createBoolValue(bool boolValue) {
+      Object value;
       value.setIntValue(boolValue ? 1 : 0);
       value.setType(ValueType::BOOL);
       return value;
     }
 
-    static ValueObject createStringValue(string stringValue) {
-      ValueObject value;
+    static Object createStringValue(string stringValue) {
+      Object value;
       value.setStringValue(stringValue);
       value.setType(ValueType::STRING);
       return value;
     }
 
-    static ValueObject createIdValue(string idValue) {
-      ValueObject value;
+    static Object createIdValue(string idValue) {
+      Object value;
       value.setId(idValue);
       value.setType(ValueType::ID);
       return value;
     }
 
-    static ValueObject createPointer(ValueObject *pointer) {
-      ValueObject value;
+    static Object createPointer(Object *pointer) {
+      Object value;
       value.setPointer(pointer);
       value.setType(ValueType::POINTER);
       return value;
     }
 
-    static ValueObject createValueFrom(Token token) {
-      ValueObject value;
+    static Object createValueFrom(Token token) {
+      Object value;
       switch(token.getType()) {
       case Type::INT:
         value.setType(ValueType::INT);
@@ -98,17 +98,17 @@ namespace Effie {
       return value;
     }
 
-    virtual ValueObject add(ValueObject);
-    virtual ValueObject sub(ValueObject);
-    virtual ValueObject mul(ValueObject);
-    virtual ValueObject div(ValueObject);
-    virtual ValueObject mod(ValueObject);
-    virtual ValueObject eq(ValueObject);
-    virtual ValueObject ne(ValueObject);
-    virtual ValueObject ge(ValueObject);
-    virtual ValueObject gt(ValueObject);
-    virtual ValueObject le(ValueObject);
-    virtual ValueObject lt(ValueObject);
-    // virtual ValueObject nt();
+    virtual Object add(Object);
+    virtual Object sub(Object);
+    virtual Object mul(Object);
+    virtual Object div(Object);
+    virtual Object mod(Object);
+    virtual Object eq(Object);
+    virtual Object ne(Object);
+    virtual Object ge(Object);
+    virtual Object gt(Object);
+    virtual Object le(Object);
+    virtual Object lt(Object);
+    // virtual Object nt();
   };
 }

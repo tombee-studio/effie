@@ -193,14 +193,14 @@ Parser::parseTermNode() {
     isValidAt(getIndex(), Type::DOUBLE)) {
       Token token = consumeValue();
       return new TermNode(
-        ValueObject::createValueFrom(token));
+        Object::createValueFrom(token));
   }
 
   if(isValidAt(getIndex(), Type::ID)) {
     Token token = consumeNext();
     auto argument = parseArgumentNode();
     if(argument == NULL) {
-      return new VariableNode(ValueObject::createValueFrom(token));
+      return new VariableNode(Object::createValueFrom(token));
     } else {
       return new CallFunctionNode(token.getId(), argument);
     }

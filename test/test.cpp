@@ -25,7 +25,7 @@ testLex(string input, initializer_list<Type> tokenTypes) {
 }
 
 void
-testInterpreter(initializer_list<MnemonicCode> array, ValueObject target) {
+testInterpreter(initializer_list<MnemonicCode> array, Object target) {
   vector<MnemonicCode> codes;
   for(int i = 0; i < array.size(); i++) {
     codes.push_back(*(array.begin() + i));
@@ -54,14 +54,14 @@ testParser(string text) {
   cout << "OK! " << text << endl;
 }
 
-ValueObject
-test(vector<ValueObject> arguments) {
+Object
+test(vector<Object> arguments) {
   auto value = arguments[0];
-  return value.mul(ValueObject::createIntValue(3));
+  return value.mul(Object::createIntValue(3));
 }
 
 void
-testInterpreterRun(string source, ValueObject target) {
+testInterpreterRun(string source, Object target) {
   auto tokens = Lexer(source).lex();
   Parser parser(tokens);
   auto root = parser.parse();
@@ -151,106 +151,106 @@ main() {
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(1)),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(1)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(2)),
     MnemonicCode(Mnemonic::ADD),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(3));
+  }, Object::createIntValue(3));
   
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(1)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(2)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(1)),
     MnemonicCode(Mnemonic::SUB),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(1));
+  }, Object::createIntValue(1));
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(1)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(2)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(1)),
     MnemonicCode(Mnemonic::MUL),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(2));
+  }, Object::createIntValue(2));
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(4)),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(4)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(2)),
     MnemonicCode(Mnemonic::DIV),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(2));
+  }, Object::createIntValue(2));
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(3)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(2)),
     MnemonicCode(Mnemonic::MOD),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(1));
+  }, Object::createIntValue(1));
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(2)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(3)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(2)),
     MnemonicCode(Mnemonic::EQ),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(0));
+  }, Object::createIntValue(0));
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(3)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(3)),
     MnemonicCode(Mnemonic::EQ),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(1));
+  }, Object::createIntValue(1));
 
-  ValueObject targetValue1;
+  Object targetValue1;
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createPointer(&targetValue1)),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
+    MnemonicCode(Mnemonic::PUSH, Object::createPointer(&targetValue1)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(3)),
     MnemonicCode(Mnemonic::MOV),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(3));
+  }, Object::createIntValue(3));
   assert(targetValue1.getIntValue() == 3);
 
   testInterpreter({
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::VAR),
-    MnemonicCode(Mnemonic::REF, ValueObject::createIdValue("test")),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
+    MnemonicCode(Mnemonic::REF, Object::createIdValue("test")),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(3)),
     MnemonicCode(Mnemonic::MOV),
     MnemonicCode(Mnemonic::POP),
     MnemonicCode(Mnemonic::VAR),
-    MnemonicCode(Mnemonic::REF, ValueObject::createIdValue("test")),
+    MnemonicCode(Mnemonic::REF, Object::createIdValue("test")),
     MnemonicCode(Mnemonic::GET),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(3));
+  }, Object::createIntValue(3));
   assert(targetValue1.getIntValue() == 3);
 
   testInterpreter({
     MnemonicCode(Mnemonic::NOP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createBoolValue(true)),
-    MnemonicCode(Mnemonic::JE, ValueObject::createIntValue(5)),
+    MnemonicCode(Mnemonic::PUSH, Object::createBoolValue(true)),
+    MnemonicCode(Mnemonic::JE, Object::createIntValue(5)),
     MnemonicCode(Mnemonic::NOP),
     MnemonicCode(Mnemonic::NOP),
     MnemonicCode(Mnemonic::NOP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(3)),
     MnemonicCode(Mnemonic::NOP),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(3));
+  }, Object::createIntValue(3));
 
   testInterpreter({
     MnemonicCode(Mnemonic::NOP),
-    MnemonicCode(Mnemonic::JMP, ValueObject::createIntValue(5)),
+    MnemonicCode(Mnemonic::JMP, Object::createIntValue(5)),
     MnemonicCode(Mnemonic::NOP),
     MnemonicCode(Mnemonic::NOP),
     MnemonicCode(Mnemonic::NOP),
-    MnemonicCode(Mnemonic::PUSH, ValueObject::createIntValue(3)),
+    MnemonicCode(Mnemonic::PUSH, Object::createIntValue(3)),
     MnemonicCode(Mnemonic::NOP),
     MnemonicCode(Mnemonic::EXIT)
-  }, ValueObject::createIntValue(3));
+  }, Object::createIntValue(3));
 
   testParser("3;");
   testParser("a;");
@@ -267,26 +267,26 @@ main() {
   testParser("3 * 2 == 36 / 6;");
   testParser("a = 2; if a == 2: a = 3; else: a = 4; end a;");
 
-  testInterpreterRun("3;", ValueObject::createIntValue(3));
-  testInterpreterRun("(1);", ValueObject::createIntValue(1));
-  testInterpreterRun("3 * 2;", ValueObject::createIntValue(6));
-  testInterpreterRun("15 / 5;", ValueObject::createIntValue(3));
-  testInterpreterRun("15 / 5 + 3;", ValueObject::createIntValue(6));
-  testInterpreterRun("3 % 2;", ValueObject::createIntValue(1));
-  testInterpreterRun("3 % 2 + 1;", ValueObject::createIntValue(2));
-  testInterpreterRun("3 * 2 == 36 / 6;", ValueObject::createIntValue(1));
-  testInterpreterRun("a = 3; a;", ValueObject::createIntValue(3));
-  testInterpreterRun("test(2);", ValueObject::createIntValue(6));
-  testInterpreterRun("a = 3; test(a + 1);", ValueObject::createIntValue(12));
+  testInterpreterRun("3;", Object::createIntValue(3));
+  testInterpreterRun("(1);", Object::createIntValue(1));
+  testInterpreterRun("3 * 2;", Object::createIntValue(6));
+  testInterpreterRun("15 / 5;", Object::createIntValue(3));
+  testInterpreterRun("15 / 5 + 3;", Object::createIntValue(6));
+  testInterpreterRun("3 % 2;", Object::createIntValue(1));
+  testInterpreterRun("3 % 2 + 1;", Object::createIntValue(2));
+  testInterpreterRun("3 * 2 == 36 / 6;", Object::createIntValue(1));
+  testInterpreterRun("a = 3; a;", Object::createIntValue(3));
+  testInterpreterRun("test(2);", Object::createIntValue(6));
+  testInterpreterRun("a = 3; test(a + 1);", Object::createIntValue(12));
   testInterpreterRun(
     "a = 2; if a == 2: a = 3; else: a = 1; end a;", 
-    ValueObject::createIntValue(3));
+    Object::createIntValue(3));
   testInterpreterRun(
     "a = 1; if a == 1: b = 4; b = 7; elif a == 3: b = 5; else: b = 6; end b;", 
-    ValueObject::createIntValue(7));
+    Object::createIntValue(7));
   testInterpreterRun(
     "a = 1; while a < 5: a = a + 1; end a;", 
-    ValueObject::createIntValue(5));
+    Object::createIntValue(5));
 
   return 0;
 }
