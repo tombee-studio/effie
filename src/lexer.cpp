@@ -83,8 +83,13 @@ Lexer::lexString() {
   size += 1;
 
   char str[size - 1];
-  strncpy(str, &(_text[_index + 1]), size - 2);
-  str[size - 1] = 0;
+  for(int i = 1; i < size; i++) {
+    str[i - 1] = _text[start + i];
+    if(_text[start + i] =='\"' ) {
+      str[i - 1] = 0;
+      break;
+    }
+  }
 
   tokens.push_back(Token::createStringToken(str));
   _index = start + size;

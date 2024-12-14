@@ -186,6 +186,24 @@ Parser::parseArgumentNode() {
   return new ArgumentNode(arguments);
 }
 
+SubscriptOperatorNode *
+Parser::parseSubscriptOperator() {
+  vector<string> subscripts;
+  if(!isValidAt(getIndex(), Type::KW_LBRACKET)) {
+    return NULL;
+  }
+  while(isValidAt(getIndex(), Type::KW_LBRACKET)) {
+    consumeNext();
+    auto token = consume(Type::STRING);
+    subscripts.push_back(token.getStringVal());
+    if(!isValidAt(getIndex(), Type::KW_RBRACKET)) {
+      throw runtime_error("expected ']'");
+    }
+    consumeNext();
+  }
+  return new SubscriptOperatorNode(subscripts);
+}
+
 ExpressionNode *
 Parser::parseTermNode() {
   if(isValidAt(getIndex(), Type::INT) ||
@@ -200,7 +218,9 @@ Parser::parseTermNode() {
     Token token = consumeNext();
     auto argument = parseArgumentNode();
     if(argument == NULL) {
-      return new VariableNode(Object::createValueFrom(token));
+      return new VariableNode(
+        Object::createValueFrom(token),
+        parseSubscriptOperator());
     } else {
       return new CallFunctionNode(token.getId(), argument);
     }
