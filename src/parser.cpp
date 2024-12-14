@@ -56,28 +56,19 @@ Parser::parseIfStatement() {
   consumeNext();
 
   auto condition = parseExpressionNode();
-  if(!isValidAt(getIndex(), Type::KW_THEN)) {
-    throw runtime_error("expected 'then'");
-  }
-  consumeNext();
-  
-  StatementNode* trueStatement = parseStatement();
+  StatementNode* trueStatement = parseBlock();
   vector<ElifStatementNode *> elifStatements;
   StatementNode* elseStatement = NULL;
 
   while(isValidAt(getIndex(), Type::KW_ELIF)) {
     consumeNext();
     auto _expr = parseExpressionNode();
-    if(!isValidAt(getIndex(), Type::KW_THEN)) {
-      throw runtime_error("expected 'then'");
-    }
-    consumeNext();
     elifStatements.push_back(
-      new ElifStatementNode(_expr, parseStatement()));
+      new ElifStatementNode(_expr, parseBlock()));
   }
   if(isValidAt(getIndex(), Type::KW_ELSE)) {
     consumeNext();
-    elseStatement = parseStatement();
+    elseStatement = parseBlock();
   }
   if(!isValidAt(getIndex(), Type::KW_END)) {
     throw runtime_error("expected: 'end'");

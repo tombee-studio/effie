@@ -14,7 +14,6 @@ Lexer::lex() {
     if(lexKW("elif", Type::KW_ELIF)) continue;
     if(lexKW("else", Type::KW_ELSE)) continue;
     if(lexKW("end", Type::KW_END)) continue;
-    if(lexKW("then", Type::KW_THEN)) continue;
     if(lexKW("==", Type::KW_EQ)) continue;
     if(lexKW("true", Type::KW_TRUE)) continue;
     if(lexKW("false", Type::KW_FALSE)) continue;

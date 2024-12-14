@@ -34,7 +34,6 @@ namespace Effie {
     KW_IF,
     KW_ELIF,
     KW_ELSE,
-    KW_THEN,
     KW_END,
     NONE
   };
