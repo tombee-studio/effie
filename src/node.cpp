@@ -113,8 +113,8 @@ CallFunctionNode::compile(vector<MnemonicCode>& codes) {
   getArgument()->compile(codes);
   codes.push_back(MnemonicCode(
     Mnemonic::CALL, 
-    ValueObject::createIdValue(getName()),
-    ValueObject::createIntValue(getArgument()->size())));
+    Object::createIdValue(getName()),
+    Object::createIntValue(getArgument()->size())));
 }
 
 void
@@ -143,30 +143,44 @@ BlockStatementNode::compile(vector<MnemonicCode>& codes) {
 }
 
 void
+WhileStatementNode::compile(vector<MnemonicCode>& codes) {
+  codes.push_back(MnemonicCode(Mnemonic::POP));
+
+  int startIndex = codes.size();
+  getCondition()->compile(codes);
+
+  int jneIndex = codes.size();
+  codes.push_back(MnemonicCode(Mnemonic::JNE, Object::createIntValue(0)));
+  getBody()->compile(codes);
+  codes.push_back(MnemonicCode(Mnemonic::JMP, Object::createIntValue(startIndex)));
+  codes[jneIndex] = MnemonicCode(Mnemonic::JNE, Object::createIntValue(codes.size()));
+}
+
+void
 IfStatementNode::compile(vector<MnemonicCode>& codes) {
   auto skipIndexes = vector<int>();
   codes.push_back(MnemonicCode(Mnemonic::POP));
   getCondition()->compile(codes);
 
   int startIndex = codes.size();
-  codes.push_back(MnemonicCode(Mnemonic::JNE, ValueObject::createIntValue(0)));
+  codes.push_back(MnemonicCode(Mnemonic::JNE, Object::createIntValue(0)));
   getTrueStatement()->compile(codes);
   skipIndexes.push_back(codes.size());
-  codes.push_back(MnemonicCode(Mnemonic::JMP, ValueObject::createIntValue(0)));
+  codes.push_back(MnemonicCode(Mnemonic::JMP, Object::createIntValue(0)));
   for(auto statement: getElifStatements()) {
-    codes[startIndex] = MnemonicCode(Mnemonic::JNE, ValueObject::createIntValue(codes.size()));
+    codes[startIndex] = MnemonicCode(Mnemonic::JNE, Object::createIntValue(codes.size()));
     codes.push_back(MnemonicCode(Mnemonic::POP));
     statement->getCondition()->compile(codes);
     startIndex = codes.size();
-    codes.push_back(MnemonicCode(Mnemonic::JNE, ValueObject::createIntValue(0)));
+    codes.push_back(MnemonicCode(Mnemonic::JNE, Object::createIntValue(0)));
     statement->getTrueStatement()->compile(codes);
     skipIndexes.push_back(codes.size());
-    codes.push_back(MnemonicCode(Mnemonic::JMP, ValueObject::createIntValue(0)));
+    codes.push_back(MnemonicCode(Mnemonic::JMP, Object::createIntValue(0)));
   }
-  codes[startIndex] = MnemonicCode(Mnemonic::JNE, ValueObject::createIntValue(codes.size()));
+  codes[startIndex] = MnemonicCode(Mnemonic::JNE, Object::createIntValue(codes.size()));
   getElseStatement()->compile(codes);
   for(auto skipIndex: skipIndexes) {
-    codes[skipIndex] = MnemonicCode(Mnemonic::JMP, ValueObject::createIntValue(codes.size()));
+    codes[skipIndex] = MnemonicCode(Mnemonic::JMP, Object::createIntValue(codes.size()));
   }
 }
 
@@ -182,9 +196,9 @@ ExpressionStatementNode::compile(vector<MnemonicCode>& codes) {
 
 void
 RootNode::compile(vector<MnemonicCode>& codes) {
-  codes.push_back(MnemonicCode(Mnemonic::PUSH, ValueObject::createNone()));
+  codes.push_back(MnemonicCode(Mnemonic::PUSH, Object::createNone()));
   for(auto statement: getStatemants()) {
     statement->compile(codes);
   }
-  codes.push_back(MnemonicCode(Mnemonic::EXIT, ValueObject::createNone()));
+  codes.push_back(MnemonicCode(Mnemonic::EXIT, Object::createNone()));
 }

@@ -29,7 +29,23 @@ Parser::parseStatement() {
   if((statement = parseBlock()) != NULL) {
     return statement;
   }
+  if((statement = parseWhileStatement()) != NULL) {
+    return statement;
+  }
   return NULL;
+}
+
+StatementNode*
+Parser::parseWhileStatement() {
+  if(!isValidAt(getIndex(), Type::KW_WHILE)) {
+    return NULL;
+  }
+  consumeNext();
+
+  auto condition = parseExpressionNode();
+  auto block = parseBlock();
+
+  return new WhileStatementNode(condition, block);
 }
 
 StatementNode*
@@ -44,6 +60,9 @@ Parser::parseBlock() {
     isValidAt(getIndex(), Type::KW_ELSE))) {
       statements.push_back(parseStatement());
     }
+  if(isValidAt(getIndex(), Type::KW_END)) {
+    consumeNext();
+  }
   return new BlockStatementNode(statements);
 }
 
@@ -56,33 +75,20 @@ Parser::parseIfStatement() {
   consumeNext();
 
   auto condition = parseExpressionNode();
-  if(!isValidAt(getIndex(), Type::KW_THEN)) {
-    throw runtime_error("expected 'then'");
-  }
-  consumeNext();
-  
-  StatementNode* trueStatement = parseStatement();
+  StatementNode* trueStatement = parseBlock();
   vector<ElifStatementNode *> elifStatements;
   StatementNode* elseStatement = NULL;
 
   while(isValidAt(getIndex(), Type::KW_ELIF)) {
     consumeNext();
     auto _expr = parseExpressionNode();
-    if(!isValidAt(getIndex(), Type::KW_THEN)) {
-      throw runtime_error("expected 'then'");
-    }
-    consumeNext();
     elifStatements.push_back(
-      new ElifStatementNode(_expr, parseStatement()));
+      new ElifStatementNode(_expr, parseBlock()));
   }
   if(isValidAt(getIndex(), Type::KW_ELSE)) {
     consumeNext();
-    elseStatement = parseStatement();
+    elseStatement = parseBlock();
   }
-  if(!isValidAt(getIndex(), Type::KW_END)) {
-    throw runtime_error("expected: 'end'");
-  }
-  consumeNext();
   return new IfStatementNode(condition, trueStatement, elifStatements, elseStatement);
 }
 
@@ -187,14 +193,14 @@ Parser::parseTermNode() {
     isValidAt(getIndex(), Type::DOUBLE)) {
       Token token = consumeValue();
       return new TermNode(
-        ValueObject::createValueFrom(token));
+        Object::createValueFrom(token));
   }
 
   if(isValidAt(getIndex(), Type::ID)) {
     Token token = consumeNext();
     auto argument = parseArgumentNode();
     if(argument == NULL) {
-      return new VariableNode(ValueObject::createValueFrom(token));
+      return new VariableNode(Object::createValueFrom(token));
     } else {
       return new CallFunctionNode(token.getId(), argument);
     }

@@ -1,164 +1,164 @@
 #include <value_object.hpp>
 using namespace Effie;
 
-ValueObject
-ValueObject::add(ValueObject value) {
+Object
+Object::add(Object value) {
   if(getType() != value.getType()) {
     throw runtime_error("型の不一致");
   }
   switch(getType()) {
   case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() + value.getIntValue());
+    return Object::createIntValue(getIntValue() + value.getIntValue());
   default:
     throw runtime_error("Unsupported operation");
   }
 }
 
-ValueObject
-ValueObject::sub(ValueObject value) {
-  if(getType() != value.getType()) {
-    throw runtime_error("型の不一致");
-  }
-
-  switch(getType()) {
-  case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() - value.getIntValue());
-  default:
-    throw runtime_error("Unsupported operation");
-  }
-}
-
-ValueObject
-ValueObject::mul(ValueObject value) {
+Object
+Object::sub(Object value) {
   if(getType() != value.getType()) {
     throw runtime_error("型の不一致");
   }
 
   switch(getType()) {
   case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() * value.getIntValue());
+    return Object::createIntValue(getIntValue() - value.getIntValue());
   default:
     throw runtime_error("Unsupported operation");
   }
 }
 
-ValueObject 
-ValueObject::div(ValueObject value) {
+Object
+Object::mul(Object value) {
   if(getType() != value.getType()) {
     throw runtime_error("型の不一致");
   }
 
   switch(getType()) {
   case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() / value.getIntValue());
+    return Object::createIntValue(getIntValue() * value.getIntValue());
   default:
     throw runtime_error("Unsupported operation");
   }
 }
 
-ValueObject 
-ValueObject::mod(ValueObject value) {
+Object 
+Object::div(Object value) {
   if(getType() != value.getType()) {
     throw runtime_error("型の不一致");
   }
 
   switch(getType()) {
   case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() % value.getIntValue());
+    return Object::createIntValue(getIntValue() / value.getIntValue());
   default:
     throw runtime_error("Unsupported operation");
   }
 }
 
-ValueObject 
-ValueObject::eq(ValueObject value) {
+Object 
+Object::mod(Object value) {
   if(getType() != value.getType()) {
     throw runtime_error("型の不一致");
   }
 
   switch(getType()) {
   case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() == value.getIntValue());
+    return Object::createIntValue(getIntValue() % value.getIntValue());
   default:
     throw runtime_error("Unsupported operation");
   }
 }
 
-ValueObject
-ValueObject::ne(ValueObject value) {
+Object 
+Object::eq(Object value) {
   if(getType() != value.getType()) {
     throw runtime_error("型の不一致");
   }
 
   switch(getType()) {
   case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() != value.getIntValue());
+    return Object::createIntValue(getIntValue() == value.getIntValue());
   default:
     throw runtime_error("Unsupported operation");
   }
 }
 
-ValueObject
-ValueObject::ge(ValueObject value) {
+Object
+Object::ne(Object value) {
   if(getType() != value.getType()) {
     throw runtime_error("型の不一致");
   }
 
   switch(getType()) {
   case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() >= value.getIntValue());
+    return Object::createIntValue(getIntValue() != value.getIntValue());
   default:
     throw runtime_error("Unsupported operation");
   }
 }
 
-ValueObject
-ValueObject::gt(ValueObject value) {
+Object
+Object::ge(Object value) {
   if(getType() != value.getType()) {
     throw runtime_error("型の不一致");
   }
 
   switch(getType()) {
   case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() > value.getIntValue());
+    return Object::createIntValue(getIntValue() >= value.getIntValue());
   default:
     throw runtime_error("Unsupported operation");
   }
 }
 
-ValueObject
-ValueObject::le(ValueObject value) {
+Object
+Object::gt(Object value) {
   if(getType() != value.getType()) {
     throw runtime_error("型の不一致");
   }
 
   switch(getType()) {
   case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() <= value.getIntValue());
+    return Object::createIntValue(getIntValue() > value.getIntValue());
   default:
     throw runtime_error("Unsupported operation");
   }
 }
 
-ValueObject
-ValueObject::lt(ValueObject value) {
+Object
+Object::le(Object value) {
   if(getType() != value.getType()) {
     throw runtime_error("型の不一致");
   }
 
   switch(getType()) {
   case ValueType::INT:
-    return ValueObject::createIntValue(getIntValue() < value.getIntValue());
+    return Object::createIntValue(getIntValue() <= value.getIntValue());
   default:
     throw runtime_error("Unsupported operation");
   }
 }
 
-// ValueObject
-// ValueObject::nt() {
+Object
+Object::lt(Object value) {
+  if(getType() != value.getType()) {
+    throw runtime_error("型の不一致");
+  }
+
+  switch(getType()) {
+  case ValueType::INT:
+    return Object::createIntValue(getIntValue() < value.getIntValue());
+  default:
+    throw runtime_error("Unsupported operation");
+  }
+}
+
+// Object
+// Object::nt() {
 //   switch(getType()) {
 //   case ValueType::INT:
-//     return ValueObject::createIntValue(!getIntValue());
+//     return Object::createIntValue(!getIntValue());
 //   default:
 //     throw runtime_error("Unsupported operation");
 //   }

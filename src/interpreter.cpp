@@ -3,7 +3,7 @@ using namespace Effie;
 
 void
 Interpreter::run() {
-  getStack().push(ValueObject::createNone());
+  getStack().push(Object::createNone());
   while(getIsRunning()) {
     runMnemonic(getMnemonics()[getProgramCount()]);
     getProgramCount()++;
@@ -22,8 +22,8 @@ Interpreter::pop(MnemonicCode code) {
 
 void
 Interpreter::add(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -33,8 +33,8 @@ Interpreter::add(MnemonicCode code) {
 
 void
 Interpreter::sub(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -44,8 +44,8 @@ Interpreter::sub(MnemonicCode code) {
 
 void
 Interpreter::mul(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -55,8 +55,8 @@ Interpreter::mul(MnemonicCode code) {
 
 void
 Interpreter::div(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -66,8 +66,8 @@ Interpreter::div(MnemonicCode code) {
 
 void
 Interpreter::mod(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -77,8 +77,8 @@ Interpreter::mod(MnemonicCode code) {
 
 void
 Interpreter::ge(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -88,8 +88,8 @@ Interpreter::ge(MnemonicCode code) {
 
 void
 Interpreter::gt(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -99,8 +99,8 @@ Interpreter::gt(MnemonicCode code) {
 
 void
 Interpreter::le(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -110,8 +110,8 @@ Interpreter::le(MnemonicCode code) {
 
 void
 Interpreter::lt(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -121,8 +121,8 @@ Interpreter::lt(MnemonicCode code) {
 
 void
 Interpreter::eq(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -132,8 +132,8 @@ Interpreter::eq(MnemonicCode code) {
 
 void
 Interpreter::ne(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
   value2 = getStack().top();
   getStack().pop();
   value1 = getStack().top();
@@ -143,8 +143,8 @@ Interpreter::ne(MnemonicCode code) {
 
 void
 Interpreter::mov(MnemonicCode code) {
-  ValueObject value1;
-  ValueObject value2;
+  Object value1;
+  Object value2;
 
   value2 = getStack().top();
   getStack().pop();
@@ -163,7 +163,7 @@ Interpreter::nt(MnemonicCode code) {
 
 void
 Interpreter::get(MnemonicCode code) {
-  ValueObject value = getStack().top();
+  Object value = getStack().top();
   getStack().pop();
   if(value.getType() != ValueType::POINTER) {
     throw runtime_error("need POINTER");
@@ -174,25 +174,25 @@ Interpreter::get(MnemonicCode code) {
 void
 Interpreter::ref(MnemonicCode code) {
   string name = code.getValue1().getId();
-  ValueObject value = getStack().top();
+  Object value = getStack().top();
   getStack().pop();
 
   auto& dict = value.getPointer()->getDictionary();
   if(dict.find(name) == dict.end()) {
-    dict.insert({ name, ValueObject::createNone() });
+    dict.insert({ name, Object::createNone() });
   }
   getStack().push(
-    ValueObject::createPointer(&dict[name]));
+    Object::createPointer(&dict[name]));
 }
 
 void
 Interpreter::var(MnemonicCode code) {
-  getStack().push(ValueObject::createPointer(&getGlobal()));
+  getStack().push(Object::createPointer(&getGlobal()));
 }
 
 void
 Interpreter::je(MnemonicCode code) {
-  ValueObject value = getStack().top();
+  Object value = getStack().top();
   int next = code.getValue1().getIntValue();
   if(value.getIntValue() > 0) {
     getProgramCount() = next - 1;
@@ -207,7 +207,7 @@ Interpreter::jmp(MnemonicCode code) {
 
 void
 Interpreter::jne(MnemonicCode code) {
-  ValueObject value = getStack().top();
+  Object value = getStack().top();
   int next = code.getValue1().getIntValue();
   if(value.getIntValue() == 0) {
     getProgramCount() = next - 1;
@@ -219,9 +219,9 @@ Interpreter::call(MnemonicCode code) {
   string name = code.getValue1().getId();
   int counts = code.getValue2().getIntValue();
   auto table = getFunctionTable();
-  vector<ValueObject> args;
+  vector<Object> args;
   for(int i = 0; i < counts; i++) {
-    ValueObject value = getStack().top();
+    Object value = getStack().top();
     args.insert(args.begin(), value);
     getStack().pop();
   }
@@ -315,7 +315,7 @@ Interpreter::runMnemonic(MnemonicCode code) {
   }
 }
 
-ValueObject
+Object
 Interpreter::getReturnValue() {
   return getStack().top();
 }

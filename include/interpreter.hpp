@@ -15,14 +15,14 @@ namespace Effie {
       Mnemonics,
       vector<MnemonicCode>())
     PROPERTY(
-      stack<ValueObject>,
+      stack<Object>,
       Stack,
-      stack<ValueObject>()
+      stack<Object>()
     )
     PRIVATE_PROPERTY(
-      ValueObject,
+      Object,
       Global,
-      ValueObject::createNone()
+      Object::createNone()
     )
     PRIVATE_PROPERTY(
       bool,
@@ -35,9 +35,9 @@ namespace Effie {
       0
     )
     GETTER(
-      ValueObject::FunctionTable,
+      Object::FunctionTable,
       FunctionTable,
-      ValueObject::FunctionTable()
+      Object::FunctionTable()
     )
   public:
     Interpreter() {}
@@ -45,7 +45,7 @@ namespace Effie {
     void run();
     void runMnemonic(MnemonicCode code);
 
-    ValueObject getReturnValue();
+    Object getReturnValue();
 
   protected:
     virtual void push(MnemonicCode code);

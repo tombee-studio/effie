@@ -101,9 +101,9 @@ namespace Effie {
   };
 
   class TermNode: public ExpressionNode {
-    PRIVATE_PROPERTY(ValueObject, Value, ValueObject::createNone())
+    PRIVATE_PROPERTY(Object, Value, Object::createNone())
   public:
-    TermNode(ValueObject value) {
+    TermNode(Object value) {
       setValue(value);
     }
 
@@ -143,9 +143,9 @@ namespace Effie {
   };
 
   class VariableNode: public ExpressionNode {
-    PRIVATE_PROPERTY(ValueObject, Name, ValueObject::createNone())
+    PRIVATE_PROPERTY(Object, Name, Object::createNone())
   public:
-    VariableNode(ValueObject name) {
+    VariableNode(Object name) {
       setName(name);
     }
 
@@ -160,6 +160,24 @@ namespace Effie {
     virtual ~StatementNode() {}
 
     virtual void compile(vector<MnemonicCode>& codes) = 0;
+  };
+
+  class WhileStatementNode: public StatementNode {
+    PRIVATE_PROPERTY(ExpressionNode *, Condition, NULL)
+    PRIVATE_PROPERTY(StatementNode *, Body, NULL)
+  public:
+    WhileStatementNode(
+      ExpressionNode *condition,
+      StatementNode *body) {
+        setCondition(condition);
+        setBody(body);
+    }
+
+    virtual ~WhileStatementNode() override {
+      StatementNode::~StatementNode();
+    }
+
+    virtual void compile(vector<MnemonicCode>& codes) override;
   };
 
   class BlockStatementNode: public StatementNode {
