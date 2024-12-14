@@ -193,20 +193,25 @@ Interpreter::var(MnemonicCode code) {
 void
 Interpreter::je(MnemonicCode code) {
   ValueObject value = getStack().top();
-  getStack().pop();
   int next = code.getValue1().getIntValue();
-  if(value.getType() != ValueType::BOOL) {
-    throw runtime_error("condition must be boolean");
-  }
   if(value.getIntValue() > 0) {
-    getProgramCount() = next;
+    getProgramCount() = next - 1;
   }
 }
 
 void
 Interpreter::jmp(MnemonicCode code) {
   int next = code.getValue1().getIntValue();
-  getProgramCount() = next;
+  getProgramCount() = next - 1;
+}
+
+void
+Interpreter::jne(MnemonicCode code) {
+  ValueObject value = getStack().top();
+  int next = code.getValue1().getIntValue();
+  if(value.getIntValue() == 0) {
+    getProgramCount() = next - 1;
+  }
 }
 
 void
@@ -291,6 +296,12 @@ Interpreter::runMnemonic(MnemonicCode code) {
     break;
   case Mnemonic::JE:
     je(code);
+    break;
+  case Mnemonic::JNE:
+    jne(code);
+    break;
+  case Mnemonic::JMP:
+    jmp(code);
     break;
   case Mnemonic::CALL:
     call(code);

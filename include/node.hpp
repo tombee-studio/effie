@@ -162,6 +162,62 @@ namespace Effie {
     virtual void compile(vector<MnemonicCode>& codes) = 0;
   };
 
+  class BlockStatementNode: public StatementNode {
+    PRIVATE_PROPERTY(vector<StatementNode *>, Statements, vector<StatementNode *>())
+  public:
+    BlockStatementNode(
+      vector<StatementNode *> statements) {
+        setStatements(statements);
+    }
+
+    virtual ~BlockStatementNode() override {
+      StatementNode::~StatementNode();
+    }
+
+    virtual void compile(vector<MnemonicCode>& codes) override;
+  };
+
+  class ElifStatementNode: public StatementNode {
+    GETTER(ExpressionNode *, Condition, NULL)
+    GETTER(StatementNode *, TrueStatement, NULL)
+  public:
+    ElifStatementNode(
+      ExpressionNode *condition, 
+      StatementNode *trueStatement) {
+        setCondition(condition);
+        setTrueStatement(trueStatement);
+    }
+
+    virtual ~ElifStatementNode() override {
+      StatementNode::~StatementNode();
+    }
+
+    virtual void compile(vector<MnemonicCode>& codes) override;
+  };
+
+  class IfStatementNode: public StatementNode {
+    PRIVATE_PROPERTY(ExpressionNode *, Condition, NULL)
+    PRIVATE_PROPERTY(StatementNode *, TrueStatement, NULL)
+    PRIVATE_PROPERTY(vector<ElifStatementNode *>, ElifStatements, vector<ElifStatementNode *>())
+    PRIVATE_PROPERTY(StatementNode *, ElseStatement, NULL)
+  public:
+    IfStatementNode(ExpressionNode *condition, 
+      StatementNode *trueStatement, 
+      vector<ElifStatementNode *> elifStatements,
+      StatementNode *elseStatement) {
+        setCondition(condition);
+        setTrueStatement(trueStatement);
+        setElifStatements(elifStatements);
+        setElseStatement(elseStatement);
+    }
+
+    virtual ~IfStatementNode() override {
+      StatementNode::~StatementNode();
+    }
+
+    virtual void compile(vector<MnemonicCode>& codes) override;
+  };
+
   class ExpressionStatementNode: public StatementNode {
     PRIVATE_PROPERTY(ExpressionNode *, Expr, NULL);
   public:

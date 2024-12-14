@@ -67,6 +67,11 @@ testInterpreterRun(string source, ValueObject target) {
   auto root = parser.parse();
   vector<MnemonicCode> codes;
   root->compile(codes);
+  // for(int i = 0; i < codes.size(); i++) {
+  //   auto code = codes[i];
+  //   printf("%5d %5d %5d\n", i, (int)code.getOpCode(), (int)code.getValue1().getIntValue());
+  // }
+  
   Interpreter interpreter;
   interpreter.getFunctionTable()["test"] = test;
   interpreter.setMnemonics(codes);
@@ -106,6 +111,7 @@ main() {
   testToken("abc", Type::ID);
   testToken("true", Type::KW_TRUE);
   testToken("false", Type::KW_FALSE);
+  testToken("then", Type::KW_THEN);
 
   testLex("abc abc abc", { Type::ID, Type::ID, Type::ID, Type::NONE });
   testLex("abc 1000 1234567890.0123456789", { Type::ID, Type::INT, Type::DOUBLE, Type::NONE });
@@ -259,6 +265,7 @@ main() {
   testParser("3 * 2 / 5 % 2;");
   testParser("3 * 2 / 5 % 2 + 1 - 2;");
   testParser("3 * 2 == 36 / 6;");
+  testParser("a = 2; if a == 2 then a = 3; else a = 4; end a;");
 
   testInterpreterRun("3;", ValueObject::createIntValue(3));
   testInterpreterRun("(1);", ValueObject::createIntValue(1));
@@ -271,6 +278,12 @@ main() {
   testInterpreterRun("a = 3; a;", ValueObject::createIntValue(3));
   testInterpreterRun("test(2);", ValueObject::createIntValue(6));
   testInterpreterRun("a = 3; test(a + 1);", ValueObject::createIntValue(12));
+  testInterpreterRun(
+    "a = 2; if a == 2 then a = 3; else a = 1; end a;", 
+    ValueObject::createIntValue(3));
+  testInterpreterRun(
+    "a = 1; if a == 1 then: b = 4; b = 7; elif a == 3 then b = 5; else b = 6; end b;", 
+    ValueObject::createIntValue(7));
 
   return 0;
 }

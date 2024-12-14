@@ -67,6 +67,7 @@ namespace Effie {
     virtual void ref(MnemonicCode code);
     virtual void var(MnemonicCode code);
     virtual void je(MnemonicCode code);
+    virtual void jne(MnemonicCode code);
     virtual void jmp(MnemonicCode code);
     virtual void call(MnemonicCode code);
     virtual void exit(MnemonicCode code);

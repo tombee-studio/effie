@@ -31,6 +31,11 @@ namespace Effie {
     KW_NOT,
     KW_TRUE,
     KW_FALSE,
+    KW_IF,
+    KW_ELIF,
+    KW_ELSE,
+    KW_THEN,
+    KW_END,
     NONE
   };
 };

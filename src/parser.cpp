@@ -8,10 +8,6 @@ Parser::parse() {
     auto root = new RootNode();
     StatementNode *statement;
     while((statement = parseStatement()) != NULL) {
-      if(!isValidAt(getIndex(), Type::KW_SEMICOLON)) {
-        throw runtime_error("expected token: ';'");
-      }
-      consumeNext();
       root->getStatemants().push_back(statement);
     }
     return root;
@@ -27,13 +23,77 @@ Parser::parseStatement() {
   if((statement = parseExpressionStatement()) != NULL) {
     return statement;
   }
+  if((statement = parseIfStatement()) != NULL) {
+    return statement;
+  }
+  if((statement = parseBlock()) != NULL) {
+    return statement;
+  }
   return NULL;
+}
+
+StatementNode*
+Parser::parseBlock() {
+  if(!isValidAt(getIndex(), Type::KW_COLON)) {
+    return NULL;
+  }
+  consumeNext();
+  vector<StatementNode *> statements;
+  while(!(isValidAt(getIndex(), Type::KW_END) || 
+    isValidAt(getIndex(), Type::KW_ELIF) || 
+    isValidAt(getIndex(), Type::KW_ELSE))) {
+      statements.push_back(parseStatement());
+    }
+  return new BlockStatementNode(statements);
+}
+
+StatementNode* 
+Parser::parseIfStatement() {
+  StatementNode *statement = NULL;
+  if(!isValidAt(getIndex(), Type::KW_IF)) {
+    return NULL;
+  }
+  consumeNext();
+
+  auto condition = parseExpressionNode();
+  if(!isValidAt(getIndex(), Type::KW_THEN)) {
+    throw runtime_error("expected 'then'");
+  }
+  consumeNext();
+  
+  StatementNode* trueStatement = parseStatement();
+  vector<ElifStatementNode *> elifStatements;
+  StatementNode* elseStatement = NULL;
+
+  while(isValidAt(getIndex(), Type::KW_ELIF)) {
+    consumeNext();
+    auto _expr = parseExpressionNode();
+    if(!isValidAt(getIndex(), Type::KW_THEN)) {
+      throw runtime_error("expected 'then'");
+    }
+    consumeNext();
+    elifStatements.push_back(
+      new ElifStatementNode(_expr, parseStatement()));
+  }
+  if(isValidAt(getIndex(), Type::KW_ELSE)) {
+    consumeNext();
+    elseStatement = parseStatement();
+  }
+  if(!isValidAt(getIndex(), Type::KW_END)) {
+    throw runtime_error("expected: 'end'");
+  }
+  consumeNext();
+  return new IfStatementNode(condition, trueStatement, elifStatements, elseStatement);
 }
 
 ExpressionStatementNode* 
 Parser::parseExpressionStatement() {
   ExpressionNode *node = NULL;
   if((node = parseExpressionNode()) != NULL) {
+    if(!isValidAt(getIndex(), Type::KW_SEMICOLON)) {
+      throw runtime_error("expected token: ';'");
+    }
+    consumeNext();
     return new ExpressionStatementNode(node);
   }
   return NULL;
