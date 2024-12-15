@@ -8,7 +8,7 @@
 #include <queue>
 using namespace std;
 
-namespace Effie {
+namespace Emile {
   class Node {
   public:
     virtual void compile(vector<MnemonicCode>&) {}

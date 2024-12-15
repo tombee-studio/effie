@@ -8,7 +8,7 @@
 #include <map>
 using namespace std;
 
-namespace Effie {
+namespace Emile {
   class Interpreter: public IInterpreter {
     PROPERTY(
       vector<MnemonicCode>,

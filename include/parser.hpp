@@ -1,7 +1,7 @@
 #pragma once
 #include <node.hpp>
 
-namespace Effie {
+namespace Emile {
   class Parser {
     PRIVATE_PROPERTY(int, Index, 0);
     PRIVATE_PROPERTY(vector<Token>, Tokens, vector<Token>())

@@ -1,5 +1,5 @@
 #include <lexer.hpp>
-using namespace Effie;
+using namespace Emile;
 
 vector<Token> 
 Lexer::lex() {

@@ -4,7 +4,7 @@
 #include <value_object.hpp>
 #include <utils.hpp>
 
-namespace Effie {
+namespace Emile {
   class MnemonicCode {
     GETTER(Mnemonic, OpCode, Mnemonic::NOP)
     GETTER(Object, Value1, Object::createNone())

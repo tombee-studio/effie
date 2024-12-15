@@ -5,7 +5,7 @@
 #include <token.hpp>
 using namespace std;
 
-namespace Effie {
+namespace Emile {
   class Lexer {
     string _text;
     const char *_cText;

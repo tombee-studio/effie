@@ -1,5 +1,5 @@
 #include <value_object.hpp>
-using namespace Effie;
+using namespace Emile;
 
 Object
 Object::add(Object value) {

@@ -3,7 +3,7 @@
 #include <cstring>
 #include <type.hpp>
 
-namespace Effie {
+namespace Emile {
   class Token {
     GETTER(Type, Type, Type::NONE)
     GETTER(string, Id, "")

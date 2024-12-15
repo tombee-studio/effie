@@ -1,5 +1,5 @@
 #include <node.hpp>
-using namespace Effie;
+using namespace Emile;
 
 void
 AssignmentExpressionNode::compile(vector<MnemonicCode>& codes) {

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Effie {
+namespace Emile {
   enum class Type {
     ID,
     STRING,

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Effie {
+namespace Emile {
   template<class T>
   class ICalculatable {
   public:

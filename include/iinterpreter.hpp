@@ -1,7 +1,7 @@
 #pragma once
 #include <mnemonic_code.hpp>
 
-namespace Effie {
+namespace Emile {
   class IInterpreter {
   protected:
     virtual void push(MnemonicCode code) = 0;

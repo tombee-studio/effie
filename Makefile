@@ -3,7 +3,7 @@ OBJS:=$(patsubst src/%.cpp,obj/%.o, $(SRCS))
 OBJDIRS:=$(ls $(OBJS))
 INC=./include
 LIB:=-pthread
-DYLIB:=./lib/Effie.dylib
+DYLIB:=./lib/libemile.dylib
 
 run: $(DYLIB)
 	g++ -DDEBUG $(LIB) -I./include -o a.out -std=c++14 -O3 main.cpp $(DYLIB)

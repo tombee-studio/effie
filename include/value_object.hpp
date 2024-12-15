@@ -7,7 +7,7 @@
 #include <icalculatable.hpp>
 using namespace std;
 
-namespace Effie {
+namespace Emile {
   class Object: public ICalculatable<Object> {
   public:
     typedef map<string, Object> Dictionary;

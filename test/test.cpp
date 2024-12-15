@@ -2,7 +2,7 @@
 #include <parser.hpp>
 #include <interpreter.hpp>
 #include <initializer_list>
-using namespace Effie;
+using namespace Emile;
 using namespace std;
 
 void

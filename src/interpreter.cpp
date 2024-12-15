@@ -1,5 +1,5 @@
 #include <interpreter.hpp>
-using namespace Effie;
+using namespace Emile;
 
 void
 Interpreter::run() {

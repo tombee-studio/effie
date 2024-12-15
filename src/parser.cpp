@@ -1,5 +1,5 @@
 #include <parser.hpp>
-using namespace Effie;
+using namespace Emile;
 
 RootNode* 
 Parser::parse() {

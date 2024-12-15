@@ -1,5 +1,5 @@
 #include <token.hpp>
-using namespace Effie;
+using namespace Emile;
 
 Token
 Token::createIdToken(string id) {
