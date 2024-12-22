@@ -9,6 +9,10 @@ run: $(DYLIB)
 	g++ -DDEBUG $(LIB) -I./include -o a.out -std=c++14 -O3 main.cpp $(DYLIB)
 	./a.out
 
+main: $(DYLIB)
+	g++ $(DYLIB) main.cpp -std=c++14 -o a.out -g -pthread -lgtest_main -lgtest -I./include
+	./a.out "a = 0;"
+
 test: $(DYLIB)
 	g++ $(DYLIB) test/test.cpp -std=c++14 -o test.out -g -pthread -lgtest_main -lgtest -I./include
 	./test.out
@@ -23,6 +27,6 @@ $(OBJDIRS):
 	mkdir -p $@
 
 clean:
-	rm -rf obj lib a.out test.out test.out.*
+	rm -rf obj lib a.out a.out.* test.out test.out.*
 	mkdir obj
 	mkdir lib
